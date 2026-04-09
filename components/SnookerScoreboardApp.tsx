@@ -140,14 +140,14 @@ export default function SnookerScoreboardApp() {
           <CardContent className="p-6 grid grid-cols-2 gap-6">
             {(['A', 'B'] as Player[]).map(p => (
               <div key={p} className={`rounded-3xl p-6 text-center ${currentPlayer === p ? 'bg-slate-900 text-white' : 'bg-white'}`}>
-                <div className="text-xl">Player {p}</div>
-                <div className="text-6xl font-bold mt-4">{scores[p]}</div>
-                <div className="mt-2">Frames: {frames[p]} / {framesToWin}</div>
+                <div className="text-xl"><b>Player {p} - {scores[p]} (won: {frames[p]} frames)</b></div>
               </div>
+              <div>Total frames: {framesToWin}</div>
             ))}
           </CardContent>
         </Card>
-
+        <br> </br>
+        <br> </br>
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-20 text-xl rounded-2xl" onClick={potRed}>Red</Button>
           {COLOR_ORDER.map(c => (
@@ -157,13 +157,11 @@ export default function SnookerScoreboardApp() {
           ))}
           <Button className="h-20 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
         </div>
-
+        <br> </br>
+        <br> </br>
         <Card className="rounded-3xl shadow">
           <CardContent className="p-6 grid grid-cols-4 gap-4 text-lg">
-            <div>Reds: {redsRemaining}</div>
-            <div>Break: {currentBreak}</div>
-            <div>Remaining: {remainingPoints}</div>
-            <div>Snookers needed: {snookersRequired}</div>
+            <div>Current Break: {currentBreak} | Remaining Reds: {redsRemaining} | Remaining Points: {remainingPoints}  | Snookers needed: {snookersRequired}</div>
           </CardContent>
         </Card>
 
