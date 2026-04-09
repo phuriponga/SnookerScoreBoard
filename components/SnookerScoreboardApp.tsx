@@ -141,8 +141,9 @@ export default function SnookerScoreboardApp() {
             {(['A', 'B'] as Player[]).map(p => (
               <div key={p} className={`rounded-3xl p-6 text-center ${currentPlayer === p ? 'bg-slate-900 text-white' : 'bg-white'}`}>
                 <div className="text-xl"><b>Player {p} - {scores[p]} (won: {frames[p]} frames)</b></div>
+                <br> </br>
+                Total frames: {framesToWin}
               </div>
-              <div>Total frames: {framesToWin}</div>
             ))}
           </CardContent>
         </Card>
