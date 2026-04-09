@@ -172,5 +172,5 @@ export default function SnookerScoreboardApp() {
         </div>
       </div>
     </div>
-  )
+  );
 }
