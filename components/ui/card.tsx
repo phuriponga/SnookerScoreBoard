@@ -1,13 +1,11 @@
-// components/ui/card.tsx
-import * as React from "react";
+'use client'
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+import * as React from 'react'
 
-export function Card({ className, ...props }: CardProps) {
-  return (
-    <div
-      className={`rounded-xl border border-gray-200 p-4 shadow-sm ${className}`}
-      {...props}
-    />
-  );
+export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={`rounded-xl border p-4 shadow ${className}`} {...props} />
+}
+
+export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={`p-4 ${className}`} {...props} />
 }
