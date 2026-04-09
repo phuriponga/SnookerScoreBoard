@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import { Card, CardContent } from "/ui/card"
-import { Button } from "/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 type Player = 'A' | 'B'
 type Color = 'red' | 'yellow' | 'green' | 'brown' | 'blue' | 'pink' | 'black'
