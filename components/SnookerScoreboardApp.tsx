@@ -142,8 +142,8 @@ export default function SnookerScoreboardApp() {
               <div key={p} className={`rounded-3xl p-6 text-center ${currentPlayer === p ? 'bg-slate-900 text-red' : 'bg-white'}`}>
                 <div className="text-xl">Player {p}</div>
                 <div className="text-6xl font-bold mt-4">{scores[p]}</div>
-                <div className="mt-2">Frames: {frames[p]} / {framesToWin}</div>
-              </div><br><br>
+                <div className="mt-2">Frames: {frames[p]} / {framesToWin}<br><br></div>
+              </div>
             ))}
           </CardContent>
         </Card>
