@@ -134,22 +134,18 @@ export default function SnookerScoreboardApp() {
   const snookersRequired = Math.max(0, Math.ceil((Math.abs(scores.A - scores.B) - remainingPoints) / 4))
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
+   <div className="min-h-screen bg-slate-100 p-6">
       <div className="max-w-6xl mx-auto grid gap-6">
         <Card className="rounded-3xl shadow">
           <CardContent className="p-6 grid grid-cols-2 gap-6">
             {(['A', 'B'] as Player[]).map(p => (
               <div key={p} className={`rounded-3xl p-6 text-center ${currentPlayer === p ? 'bg-slate-900 text-white' : 'bg-white'}`}>
-                <div className="text-xl"><b>Player {p} - {scores[p]} (won: {frames[p]} frames)</b></div>
-                <br>
-                <br>
-                Total frames: {framesToWin}
+                <div className="text-xl">Player {p} ---- {scores[p]} ---- (won {frames[p]} frames)</div>
               </div>
             ))}
           </CardContent>
         </Card>
-        <br>
-        <br>
+        <br><br><br>
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-20 text-xl rounded-2xl" onClick={potRed}>Red</Button>
           {COLOR_ORDER.map(c => (
@@ -159,11 +155,13 @@ export default function SnookerScoreboardApp() {
           ))}
           <Button className="h-20 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
         </div>
-        <br>
-        <br>
+
         <Card className="rounded-3xl shadow">
           <CardContent className="p-6 grid grid-cols-4 gap-4 text-lg">
-            <div>Current Break: {currentBreak} | Remaining Reds: {redsRemaining} | Remaining Points: {remainingPoints}  | Snookers needed: {snookersRequired}</div>
+            <div>Reds: {redsRemaining}</div>
+            <div>Break: {currentBreak}</div>
+            <div>Remaining: {remainingPoints}</div>
+            <div>Snookers needed: {snookersRequired}</div>
           </CardContent>
         </Card>
 
@@ -173,6 +171,6 @@ export default function SnookerScoreboardApp() {
           <Button className="h-16 rounded-2xl" onClick={endFrame}>End Frame</Button>
         </div>
       </div>
-    </div>
+    </div>  
   )
 }
