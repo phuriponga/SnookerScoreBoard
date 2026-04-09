@@ -141,14 +141,15 @@ export default function SnookerScoreboardApp() {
             {(['A', 'B'] as Player[]).map(p => (
               <div key={p} className={`rounded-3xl p-6 text-center ${currentPlayer === p ? 'bg-slate-900 text-white' : 'bg-white'}`}>
                 <div className="text-xl"><b>Player {p} - {scores[p]} (won: {frames[p]} frames)</b></div>
-                <br> </br>
+                <br>
+                <br>
                 Total frames: {framesToWin}
               </div>
             ))}
           </CardContent>
         </Card>
-        <br> </br>
-        <br> </br>
+        <br>
+        <br>
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-20 text-xl rounded-2xl" onClick={potRed}>Red</Button>
           {COLOR_ORDER.map(c => (
@@ -158,8 +159,8 @@ export default function SnookerScoreboardApp() {
           ))}
           <Button className="h-20 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
         </div>
-        <br> </br>
-        <br> </br>
+        <br>
+        <br>
         <Card className="rounded-3xl shadow">
           <CardContent className="p-6 grid grid-cols-4 gap-4 text-lg">
             <div>Current Break: {currentBreak} | Remaining Reds: {redsRemaining} | Remaining Points: {remainingPoints}  | Snookers needed: {snookersRequired}</div>
