@@ -226,15 +226,14 @@ export default function SnookerScoreboardApp() {
           {COLOR_ORDER.map(c => (
             <Button key={c} className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={() => potColor(c)}>
               <Image src={BALL_IMAGES[c]} alt={`${c} ball`} width={88} height={88} />
-              {c} (+{COLOR_POINTS[c]})
             </Button>
           ))}
       
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(5)}>Foul +5</Button>
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(6)}>Foul +6</Button>
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(7)}>Foul +7</Button>
-          <Button className="h-88 text-xl rounded-2xl" onClick={undo}>Undo</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(4)}>Foul +4</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(5)}>Foul +5</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(6)}>Foul +6</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(7)}>Foul +7</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={undo}>Undo</Button>
         </div>
         
         <div className="grid grid-cols-1 gap-4">
