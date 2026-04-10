@@ -1,0 +1,12 @@
+:root {
+  --font-sans: var(--font-inter);
+  --font-score: var(--font-oswald);
+}
+
+body {
+  font-family: var(--font-sans), sans-serif;
+}
+
+.score-font {
+  font-family: var(--font-score), sans-serif;
+}
