@@ -211,10 +211,10 @@ export default function SnookerScoreboardApp() {
               gridTemplateColumns: "1fr 1fr 1fr 1fr",
               gap: "12px"
             }}>
-            <h2>Remaining Reds: {redsRemaining}</h2>
-            <h2>Current Break: {currentBreak}</h2>
-            <h2>Remaining Points: {remainingPoints}</h2>
-            <h2>Snookers Needed: {snookersRequired}</h2>
+            <h3>Remaining Reds: {redsRemaining}</h3>
+            <h3>Current Break: {currentBreak}</h3>
+            <h3>Remaining Points: {remainingPoints}</h3>
+            <h3>Snookers Needed: {snookersRequired}</h3>
           </CardContent>
         </Card>
         <div style={{ height: "16px" }} />
@@ -228,7 +228,7 @@ export default function SnookerScoreboardApp() {
             </Button>
           ))}
           <br />      
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(4)}><span className="text-4xl">Foul +4</span></Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(4)}>Foul +4</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(5)}>Foul +5</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(6)}>Foul +6</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(7)}>Foul +7</Button>
