@@ -23,6 +23,7 @@ const COLOR_POINTS: Record<Color, number> = {
   blue: 5,
   pink: 6,
   black: 7,
+  white: 0,
 }
 
 const COLOR_ORDER: Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
