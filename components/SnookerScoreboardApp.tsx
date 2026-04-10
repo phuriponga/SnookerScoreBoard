@@ -42,7 +42,7 @@ const BALL_IMAGES: Record<Color | 'red', string> = {
 import Image from 'next/image'
 
 export default function SnookerScoreboardApp() {
-  const [playerNames, setPlayerNames] = useState({ A: 'Player A', B: 'Player B' })
+  const [playerNames, setPlayerNames] = useState({ A: 'Player_A', B: 'Player_B' })
   const [scores, setScores] = useState({ A: 0, B: 0 })
   const [frames, setFrames] = useState({ A: 0, B: 0 })
   const [currentPlayer, setCurrentPlayer] = useState<Player>('A')
@@ -119,8 +119,10 @@ export default function SnookerScoreboardApp() {
     setHistory(prev => [...prev, { player: other, points, label: `Foul ${points}`, redsRemaining, phase }])
   }
 
-  function switchTurn() {
-    setCurrentPlayer(p => (p === 'A' ? 'B' : 'A'))
+  function switchTurn(player: Player) {
+    if (currentPlayer !== player) {
+      setCurrentPlayer(player)
+    }
     if (redsRemaining <= 0) {
         //Potted the last red then switch turn, we shall go to colour mode
         if (phase === 'reds') {
@@ -184,7 +186,7 @@ export default function SnookerScoreboardApp() {
           >
             {(['A', 'B'] as Player[]).map(p => (
               <div
-                onClick={() => switchTurn}
+                onClick={() => switchTurn(p)}
                 key={p}
                 style={{
                   flex: 1,
@@ -197,16 +199,11 @@ export default function SnookerScoreboardApp() {
               >
                 <h1>{playerNames[p]}</h1>
                 <h1 style={{ fontSize: "168px", fontWeight: "bold", margin: "16px 0" }}>{scores[p]}</h1>
-                <div>Frames: {frames[p]} and {expectedNext} </div>
+                <div>Won: {frames[p]} frame(s)</div>
               </div>
             ))}
           </CardContent>
         </Card>
-        
-        <div className="grid grid-cols-3 gap-4">
-          <Button className="h-36 rounded-2xl" onClick={switchTurn}>Switch Player</Button>
-          <Button className="h-36 rounded-2xl" onClick={undo}>Undo</Button>          
-        </div>
 
         <Card className="rounded-3xl shadow">
           <CardContent style={{
@@ -237,8 +234,9 @@ export default function SnookerScoreboardApp() {
           <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(5)}>Foul +5</Button>
           <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(6)}>Foul +6</Button>
           <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(7)}>Foul +7</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={undo}>Undo</Button>
         </div>
-
+        
         <div className="grid grid-cols-1 gap-4">
           <Button className="h-16 rounded-2xl" onClick={endFrame}>End Frame</Button>
         </div>
