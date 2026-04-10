@@ -27,7 +27,20 @@ const COLOR_POINTS: Record<Color, number> = {
 
 const COLOR_ORDER: Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
 
+const BALL_IMAGES: Record<Color | 'red', string> = {
+  red: '/balls/red.png',
+  yellow: '/balls/yellow.png',
+  green: '/balls/green.png',
+  brown: '/balls/brown.png',
+  blue: '/balls/blue.png',
+  pink: '/balls/pink.png',
+  black: '/balls/black.png',
+}
+
+import Image from 'next/image'
+
 export default function SnookerScoreboardApp() {
+  const [playerNames, setPlayerNames] = useState({ A: 'Player A', B: 'Player B' })
   const [scores, setScores] = useState({ A: 0, B: 0 })
   const [frames, setFrames] = useState({ A: 0, B: 0 })
   const [currentPlayer, setCurrentPlayer] = useState<Player>('A')
@@ -137,25 +150,46 @@ export default function SnookerScoreboardApp() {
     <div className="min-h-screen bg-slate-100 p-6">
       <div className="max-w-6xl mx-auto grid gap-6">
         <Card className="rounded-3xl shadow">
+          <CardContent className="p-4 grid grid-cols-2 gap-4">
+            {(['A', 'B'] as Player[]).map(p => (
+              <input
+                key={p}
+                value={playerNames[p]}
+                onChange={(e) => setPlayerNames(prev => ({ ...prev, [p]: e.target.value }))}
+                className="rounded-2xl border p-4 text-2xl font-semibold"
+                placeholder={`Player ${p}`}
+              />
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-3xl shadow">
           <CardContent className="p-6 grid grid-cols-2 gap-6">
             {(['A', 'B'] as Player[]).map(p => (
-              <div key={p} className={`rounded-3xl p-6 text-center ${currentPlayer === p ? 'bg-slate-900 text-red' : 'bg-white'}`}>
-                <div className="text-xl">Player {p}</div>
-                <div className="text-6xl font-bold mt-4">{scores[p]}</div>
-                <div className="mt-2">Frames: {frames[p]} / {framesToWin}</div>
+              <div
+                key={p}
+                className={`rounded-3xl p-6 flex items-center justify-between ${currentPlayer === p ? 'bg-slate-900 text-white' : 'bg-white'}`}
+              >
+                <div className="text-3xl font-semibold">{playerNames[p]}</div>
+                <div className="text-6xl font-bold">{scores[p]}</div>
+                <div className="text-2xl">Frames: {frames[p]} / {framesToWin}</div>
               </div>
             ))}
           </CardContent>
         </Card>
 
         <div className="grid grid-cols-4 gap-4">
-          <Button className="h-20 text-xl rounded-2xl" onClick={potRed}>Red</Button>
+          <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
+            <Image src={BALL_IMAGES.red} alt="Red ball" width={48} height={48} />
+            Red
+          </Button>
           {COLOR_ORDER.map(c => (
-            <Button key={c} className="h-20 text-xl rounded-2xl" onClick={() => potColor(c)}>
+            <Button key={c} className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={() => potColor(c)}>
+              <Image src={BALL_IMAGES[c]} alt={`${c} ball`} width={48} height={48} />
               {c} (+{COLOR_POINTS[c]})
             </Button>
           ))}
-          <Button className="h-20 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
+          <Button className="h-24 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
         </div>
 
         <Card className="rounded-3xl shadow">
@@ -176,3 +210,4 @@ export default function SnookerScoreboardApp() {
     </div>
   )
 }
+
