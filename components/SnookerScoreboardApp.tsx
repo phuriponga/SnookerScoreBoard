@@ -175,6 +175,7 @@ export default function SnookerScoreboardApp() {
           >
             {(['A', 'B'] as Player[]).map(p => (
               <div
+                onClick={() => setCurrentPlayer(p)}
                 key={p}
                 style={{
                   flex: 1,
