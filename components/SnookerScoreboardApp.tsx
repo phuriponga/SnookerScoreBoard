@@ -166,14 +166,14 @@ export default function SnookerScoreboardApp() {
         <Card className="rounded-3xl shadow">
           <CardContent className="p-6 grid grid-cols-2 gap-6">
             {(['A', 'B'] as Player[]).map(p => (
-          <div
-            key={p}
-            className={`rounded-3xl p-6 flex items-center justify-between transition-all duration-300 ${currentPlayer === p ? 'bg-slate-900 text-white shadow-xl' : 'bg-white text-black'}`}
-          >
+              <div
+                key={p}
+                className={`rounded-3xl p-6 flex items-center justify-between border-4 transition-all duration-300 ${currentPlayer === p ? 
+                'bg-black text-white border-yellow-400 scale-105 shadow-2xl' : 'bg-white text-black border-gray-300'}`}
+              >
                 <h1>{playerNames[p]}</h1>
                 <h1>{scores[p]}</h1>
                 <h3>Won frames: {frames[p]}</h3>
-            {currentPlayer} and {p}
               </div>
             ))}
           </CardContent>
