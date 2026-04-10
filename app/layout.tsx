@@ -1,7 +1,15 @@
-export const metadata = {
-  title: "Snooker Club Scoreboard",
-  description: "Live referee scoring for club tournaments",
-}
+import './globals.css'
+import { Inter, Oswald } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
+
+const oswald = Oswald({
+  subsets: ['latin'],
+  variable: '--font-oswald',
+})
 
 export default function RootLayout({
   children,
@@ -9,16 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          background: "#f1f5f9",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        {children}
-      </body>
+    <html lang="en" className={`${inter.variable} ${oswald.variable}`}>
+      <body className="font-sans">{children}</body>
     </html>
   )
 }
