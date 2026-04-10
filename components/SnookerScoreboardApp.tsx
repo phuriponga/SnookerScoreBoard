@@ -5,7 +5,7 @@ import { Card, CardContent } from "../components/ui/card"
 import { Button } from "../components/ui/button"
 
 type Player = 'A' | 'B'
-type Color = 'red' | 'yellow' | 'green' | 'brown' | 'blue' | 'pink' | 'black'
+type Color = 'red' | 'yellow' | 'green' | 'brown' | 'blue' | 'pink' | 'black' | 'white'
 
 type Action = {
   player: Player
