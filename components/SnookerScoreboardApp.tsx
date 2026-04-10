@@ -173,6 +173,7 @@ export default function SnookerScoreboardApp() {
                 <h1>{playerNames[p]}</h1>
                 <h1>{scores[p]}</h1>
                 <h3>Won frames: {frames[p]}</h3>
+            {currentPlayer} and {p}
               </div>
             ))}
           </CardContent>
