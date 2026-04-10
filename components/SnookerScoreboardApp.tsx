@@ -211,12 +211,10 @@ export default function SnookerScoreboardApp() {
               gridTemplateColumns: "1fr 1fr 1fr 1fr",
               gap: "12px"
             }}>
-            <br /><br />
             <div>Remaining Reds: {redsRemaining}</div>
             <div>Current Break: {currentBreak}</div>
             <div>Remaining Points: {remainingPoints}</div>
             <div>Snookers Needed: {snookersRequired}</div>
-            <br /><br />
           </CardContent>
         </Card>
         
@@ -230,13 +228,13 @@ export default function SnookerScoreboardApp() {
             </Button>
           ))}
           <br />      
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(4)}>Foul +4</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(4)}><span className="text-4xl">Foul +4</span></Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(5)}>Foul +5</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(6)}>Foul +6</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(7)}>Foul +7</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={undo}>Undo</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={endFrame}>End Frame</Button>
-          <br /><br /><center>[Developed by &copy; Phuripong - April 2026]</center>
+          <span className="text-xl items-center justify-center">[Developed by &copy; Phuripong - April 2026]</span>
         </div>
         
       </div>
