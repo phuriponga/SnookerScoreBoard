@@ -165,13 +165,20 @@ export default function SnookerScoreboardApp() {
 
         <Card className="rounded-3xl shadow">
           <CardContent className="p-6 grid grid-cols-2 gap-6">
-            {(['A', 'B'] as Player[]).map(p => (
-              <div
-                key={p}
-                className={`w-full rounded-3xl px-8 py-6 flex items-center justify-between border-4 transition-all duration-300 ${
-                currentPlayer === p ? 'bg-black text-white border-yellow-400 shadow-2xl' : 'bg-white text-black border-gray-300'
-                }`}
-              >
+          {(['A', 'B'] as Player[]).map(p => (
+            <div
+              key={p}
+              style={{
+                backgroundColor: currentPlayer === p ? "red" : "white",
+                color: currentPlayer === p ? "white" : "black",
+                border: "4px solid black",
+                borderRadius: "24px",
+                padding: "24px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
                 <h1>{playerNames[p]}</h1>
                 <h1>{scores[p]}</h1>
                 <br />frames: {frames[p]}
