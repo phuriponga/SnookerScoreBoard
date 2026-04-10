@@ -121,6 +121,15 @@ export default function SnookerScoreboardApp() {
 
   function switchTurn() {
     setCurrentPlayer(p => (p === 'A' ? 'B' : 'A'))
+    if (redsRemaining <= 0) {
+        //Potted the last red then switch turn, we shall go to colour mode
+        if (phase === 'reds') {
+          setPhase('colors')
+          setNextColorIndex(0)
+        }
+    } else {
+      setExpectedNext('red')
+    }
   }
 
   function undo() {
