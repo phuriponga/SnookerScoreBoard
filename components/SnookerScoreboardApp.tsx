@@ -171,7 +171,7 @@ export default function SnookerScoreboardApp() {
                 className={`rounded-3xl p-6 flex items-center justify-between ${currentPlayer === p ? 'bg-slate-900 text-red' : 'bg-white'}`}
               >
                 <h1>{playerNames[p]}</h1>
-                <p style=font-size:100px>{scores[p]}</p>
+                <h1>{scores[p]}</h1>
                 <h3>Won frames: {frames[p]}</h3>
               </div>
             ))}
