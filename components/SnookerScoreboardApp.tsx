@@ -42,7 +42,7 @@ const BALL_IMAGES: Record<Color | 'red', string> = {
 import Image from 'next/image'
 
 export default function SnookerScoreboardApp() {
-  const [playerNames, setPlayerNames] = useState({ A: 'Player_A', B: 'Player_B' })
+  const [playerNames, setPlayerNames] = useState({ A: 'PlayerA', B: 'PlayerB' })
   const [scores, setScores] = useState({ A: 0, B: 0 })
   const [frames, setFrames] = useState({ A: 0, B: 0 })
   const [currentPlayer, setCurrentPlayer] = useState<Player>('A')
@@ -239,6 +239,7 @@ export default function SnookerScoreboardApp() {
         
         <div className="grid grid-cols-1 gap-4">
           <Button className="h-16 rounded-2xl" onClick={endFrame}>End Frame</Button>
+          <br />[Developed by &copy; Phuripong - April 2026]
         </div>
       </div>
     </div>
