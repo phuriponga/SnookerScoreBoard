@@ -186,7 +186,7 @@ export default function SnookerScoreboardApp() {
                 }}
               >
                 <h1>{playerNames[p]}</h1>
-                <h1>{scores[p]}</h1>
+                <h1 style={{ fontSize: "96px", fontWeight: "bold", margin: "16px 0" }}>{scores[p]}</h1>
                 <div>Frames: {frames[p]}</div>
               </div>
             ))}
@@ -201,8 +201,8 @@ export default function SnookerScoreboardApp() {
         <Card className="rounded-3xl shadow">
           <CardContent style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "24px"
+              gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              gap: "12px"
             }}>
             <div>Remaining Reds: {redsRemaining}</div>
             <div>Current Break: {currentBreak}</div>
