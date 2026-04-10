@@ -35,6 +35,7 @@ const BALL_IMAGES: Record<Color | 'red', string> = {
   blue: '/balls/blue.png',
   pink: '/balls/pink.png',
   black: '/balls/black.png',
+  white: '/balls/white.png',
 }
 
 import Image from 'next/image'
@@ -164,12 +165,12 @@ export default function SnookerScoreboardApp() {
         </Card>
 
         <Card className="rounded-3xl shadow">
-          <CardContent className="p-6 grid grid-cols-2 gap-6 flex">
+          <CardContent className="rounded-3xl p-6 flex items-center gap-6">
           {(['A', 'B'] as Player[]).map(p => (
             <div
               key={p}
               style={{
-                backgroundColor: currentPlayer === p ? "red" : "white",
+                backgroundColor: currentPlayer === p ? "green" : "white",
                 color: currentPlayer === p ? "white" : "black",
                 border: "4px solid black",
                 borderRadius: "24px",
