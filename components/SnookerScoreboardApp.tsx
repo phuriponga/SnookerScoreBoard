@@ -211,35 +211,34 @@ export default function SnookerScoreboardApp() {
               gridTemplateColumns: "1fr 1fr 1fr 1fr",
               gap: "12px"
             }}>
+            <br /><br />
             <div>Remaining Reds: {redsRemaining}</div>
             <div>Current Break: {currentBreak}</div>
             <div>Remaining Points: {remainingPoints}</div>
             <div>Snookers Needed: {snookersRequired}</div>
+            <br /><br />
           </CardContent>
         </Card>
         
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
-            Red (+1)
           </Button>
           {COLOR_ORDER.map(c => (
             <Button key={c} className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={() => potColor(c)}>
               <Image src={BALL_IMAGES[c]} alt={`${c} ball`} width={88} height={88} />
             </Button>
           ))}
-      
-          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(4)}>Foul +4</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(5)}>Foul +5</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(6)}>Foul +6</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(7)}>Foul +7</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-3xl" onClick={undo}>Undo</Button>
+          <br />      
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(4)}>Foul +4</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(5)}>Foul +5</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(6)}>Foul +6</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(7)}>Foul +7</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={undo}>Undo</Button>
+          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={endFrame}>End Frame</Button>
+          <br /><br /><center>[Developed by &copy; Phuripong - April 2026]</center>
         </div>
         
-        <div className="grid grid-cols-1 gap-4">
-          <Button className="h-16 rounded-2xl" onClick={endFrame}>End Frame</Button>
-          <br />[Developed by &copy; Phuripong - April 2026]
-        </div>
       </div>
     </div>
   )
