@@ -170,9 +170,9 @@ export default function SnookerScoreboardApp() {
                 key={p}
                 className={`rounded-3xl p-6 flex items-center justify-between ${currentPlayer === p ? 'bg-slate-900 text-white' : 'bg-white'}`}
               >
-                <div className="text-3xl font-semibold">{playerNames[p]}</div>
-                <div className="text-6xl font-bold">{scores[p]}</div>
-                <div className="text-2xl">Frames: {frames[p]} / {framesToWin}</div>
+                <h1>{playerNames[p]}</h1>
+                <h1>{scores[p]}</h1>
+                <h3>Won frames: {frames[p]}</h3>
               </div>
             ))}
           </CardContent>
