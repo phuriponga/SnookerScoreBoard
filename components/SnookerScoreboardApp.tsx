@@ -174,7 +174,6 @@ export default function SnookerScoreboardApp() {
                 border: "4px solid black",
                 borderRadius: "24px",
                 padding: "24px",
-                display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center"
               }}
@@ -203,11 +202,11 @@ export default function SnookerScoreboardApp() {
               {c} (+{COLOR_POINTS[c]})
             </Button>
           ))}
-          <br />
-          <Button className="h-24 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
-          <Button className="h-24 text-xl rounded-2xl" onClick={() => foul(5)}>Foul +5</Button>
-          <Button className="h-24 text-xl rounded-2xl" onClick={() => foul(6)}>Foul +6</Button>
-          <Button className="h-24 text-xl rounded-2xl" onClick={() => foul(7)}>Foul +7</Button>
+      
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(5)}>Foul +5</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(6)}>Foul +6</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(7)}>Foul +7</Button>
         </div>
 
         <Card className="rounded-3xl shadow">
