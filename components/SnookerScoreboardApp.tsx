@@ -204,20 +204,20 @@ export default function SnookerScoreboardApp() {
             ))}
           </CardContent>
         </Card>
-        <div className="h-6" />
+        <div style={{ height: "16px" }} />
         <Card className="rounded-3xl shadow">
           <CardContent style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr 1fr 1fr",
               gap: "12px"
             }}>
-            <div>Remaining Reds: {redsRemaining}</div>
-            <div>Current Break: {currentBreak}</div>
-            <div>Remaining Points: {remainingPoints}</div>
-            <div>Snookers Needed: {snookersRequired}</div>
+            <h2>Remaining Reds: {redsRemaining}</h2>
+            <h2>Current Break: {currentBreak}</h2>
+            <h2>Remaining Points: {remainingPoints}</h2>
+            <h2>Snookers Needed: {snookersRequired}</h2>
           </CardContent>
         </Card>
-        <div className="h-6" />
+        <div style={{ height: "16px" }} />
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
