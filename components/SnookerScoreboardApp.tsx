@@ -164,7 +164,7 @@ export default function SnookerScoreboardApp() {
         </Card>
 
         <Card className="rounded-3xl shadow">
-          <CardContent className="p-6 grid grid-cols-2 gap-6">
+          <CardContent className="p-6 grid grid-cols-2 gap-6 flex">
           {(['A', 'B'] as Player[]).map(p => (
             <div
               key={p}
@@ -203,10 +203,10 @@ export default function SnookerScoreboardApp() {
             </Button>
           ))}
       
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(4)}>Foul +4</Button>
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(5)}>Foul +5</Button>
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(6)}>Foul +6</Button>
-          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(7)}>Foul +7</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(4)}><Image src={BALL_IMAGES.white} alt="Foul" width={88} height={88} />Foul +4</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(5)}><Image src={BALL_IMAGES.white} alt="Foul" width={88} height={88} />Foul +5</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(6)}><Image src={BALL_IMAGES.white} alt="Foul" width={88} height={88} />Foul +6</Button>
+          <Button className="h-88 text-xl rounded-2xl" onClick={() => foul(7)}><Image src={BALL_IMAGES.white} alt="Foul" width={88} height={88} />Foul +7</Button>
         </div>
 
         <Card className="rounded-3xl shadow">
