@@ -168,16 +168,21 @@ export default function SnookerScoreboardApp() {
             {(['A', 'B'] as Player[]).map(p => (
               <div
                 key={p}
-                className={`rounded-3xl p-6 flex items-center justify-between ${currentPlayer === p ? 'bg-slate-900 text-white' : 'bg-white'}`}
+                className={`rounded-3xl p-6 flex items-center justify-between ${currentPlayer === p ? 'bg-slate-900 text-red' : 'bg-white'}`}
               >
                 <h1>{playerNames[p]}</h1>
-                <h1>{scores[p]}</h1>
+                <p style="font-size:100px">{scores[p]}</p>
                 <h3>Won frames: {frames[p]}</h3>
               </div>
             ))}
           </CardContent>
         </Card>
-
+        
+        <div className="grid grid-cols-2 gap-4">
+          <Button className="h-16 rounded-2xl" onClick={switchTurn}>Switch Player</Button>
+          <Button className="h-16 rounded-2xl" onClick={undo}>Undo</Button>
+        </div>
+        
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={48} height={48} />
@@ -201,9 +206,7 @@ export default function SnookerScoreboardApp() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-3 gap-4">
-          <Button className="h-16 rounded-2xl" onClick={undo}>Undo</Button>
-          <Button className="h-16 rounded-2xl" onClick={switchTurn}>Switch Player</Button>
+        <div className="grid grid-cols-1 gap-4">
           <Button className="h-16 rounded-2xl" onClick={endFrame}>End Frame</Button>
         </div>
       </div>
