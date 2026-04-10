@@ -179,12 +179,12 @@ export default function SnookerScoreboardApp() {
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              gap: "24px"
+              gap: "18px"
             }}
           >
             {(['A', 'B'] as Player[]).map(p => (
               <div
-                onClick={() => setCurrentPlayer(p)}
+                onClick={() => switchTurn}
                 key={p}
                 style={{
                   flex: 1,
@@ -192,11 +192,11 @@ export default function SnookerScoreboardApp() {
                   color: currentPlayer === p ? "white" : "black",
                   border: "4px solid black",
                   borderRadius: "24px",
-                  padding: "24px"
+                  padding: "18px"
                 }}
               >
                 <h1>{playerNames[p]}</h1>
-                <h1 style={{ fontSize: "96px", fontWeight: "bold", margin: "16px 0" }}>{scores[p]}</h1>
+                <h1 style={{ fontSize: "168px", fontWeight: "bold", margin: "16px 0" }}>{scores[p]}</h1>
                 <div>Frames: {frames[p]} and {expectedNext} </div>
               </div>
             ))}
