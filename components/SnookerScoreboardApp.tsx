@@ -198,13 +198,13 @@ export default function SnookerScoreboardApp() {
                 }}
               >
                 <h1>{playerNames[p]}</h1>
-                <h1 style={{ fontSize: "168px", fontWeight: "bold", margin: "16px 0", textAlign: "center" }}>{scores[p]}</h1>
+                <h1 style={{ fontSize: "230px", fontWeight: "bold", margin: "16px 0", textAlign: "center" }}>{scores[p]}</h1>
                 <div>Won: {frames[p]} frame(s)</div>
               </div>
             ))}
           </CardContent>
         </Card>
-
+        <div className="h-6" />
         <Card className="rounded-3xl shadow">
           <CardContent style={{
               display: "grid",
@@ -217,7 +217,7 @@ export default function SnookerScoreboardApp() {
             <div>Snookers Needed: {snookersRequired}</div>
           </CardContent>
         </Card>
-        
+        <div className="h-6" />
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
@@ -234,6 +234,7 @@ export default function SnookerScoreboardApp() {
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(7)}>Foul +7</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={undo}>Undo</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={endFrame}>End Frame</Button>
+          <div className="h-6" />
           <span className="text-xl items-center justify-center">[Developed by &copy; Phuripong - April 2026]</span>
         </div>
         
