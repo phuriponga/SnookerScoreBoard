@@ -204,7 +204,7 @@ export default function SnookerScoreboardApp() {
             ))}
           </CardContent>
         </Card>
-        <div style={{ height: "16px" }} />
+        <div style={{ height: "12px" }} />
         <Card className="rounded-3xl shadow">
           <CardContent style={{
               display: "grid",
@@ -217,7 +217,7 @@ export default function SnookerScoreboardApp() {
             <h3>Snookers Needed: {snookersRequired}</h3>
           </CardContent>
         </Card>
-        <div style={{ height: "16px" }} />
+        <div style={{ height: "14px" }} />
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
@@ -233,8 +233,8 @@ export default function SnookerScoreboardApp() {
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(6)}>Foul +6</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(7)}>Foul +7</Button>
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={undo}>Undo</Button>
+          <div style={{ height: "24px" }} />
           <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={endFrame}>End Frame</Button>
-          <div style={{ height: "38px" }} />
           <span className="text-xl items-center justify-center">[Developed by &copy; Phuripong - April 2026]</span>
         </div>
         
