@@ -198,7 +198,7 @@ export default function SnookerScoreboardApp() {
                 }}
               >
                 <h1>{playerNames[p]}</h1>
-                <h1 style={{ fontSize: "168px", fontWeight: "bold", margin: "16px 0" }}>{scores[p]}</h1>
+                <h1 style={{ fontSize: "168px", fontWeight: "bold", margin: "16px 0", textAlign: "center" }}>{scores[p]}</h1>
                 <div>Won: {frames[p]} frame(s)</div>
               </div>
             ))}
