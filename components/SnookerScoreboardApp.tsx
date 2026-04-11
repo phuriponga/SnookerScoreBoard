@@ -107,7 +107,7 @@ export default function SnookerScoreboardApp() {
     if (nextColorIndex < COLOR_ORDER.length - 1) {
       setNextColorIndex(i => i + 1)
     } else {
-      alert(`${pts} : ${color} : ${nextColorIndex} wins the frame! 🎉`)
+      alert(`${pts} : ${color} : ${nextColorIndex} wins the frame!`)
       endFrame()
     }
   }
@@ -147,7 +147,7 @@ export default function SnookerScoreboardApp() {
     const winner = scores.A >= scores.B ? 'A' : 'B'
     setFrameHistory(prev => [...prev, { A: scores.A, B: scores.B }])
     setFrames(prev => ({ ...prev, [winner]: prev[winner] + 1 }))
-    alert(`${playerNames[winner]} wins the frame! 🎉`)
+    alert(`${playerNames[winner]} wins the frame!`)
     setScores({ A: 0, B: 0 })
     setCurrentPlayer('A')
     setRedsRemaining(15)
