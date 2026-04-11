@@ -147,7 +147,7 @@ export default function SnookerScoreboardApp() {
     setFrameHistory(prev => [...prev, { A: scores.A, B: scores.B }])
     setFrames(prev => ({ ...prev, [winner]: prev[winner] + 1 }))
 
-    alert(`${playerNames[winner]} wins the frame!`)
+    //alert(`${playerNames[winner]} wins the frame!`)
     
     setScores({ A: 0, B: 0 })
     setCurrentPlayer('A')
