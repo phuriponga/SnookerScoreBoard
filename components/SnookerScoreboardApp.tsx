@@ -255,13 +255,13 @@ function endFrame(finalScores = scores) {
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={undo}>Undo</Button>
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => endFrame()}>End Frame</Button>
           <div style={{ height: "24px" }} />
-          //Show fram history
+
           <Card className="rounded-3xl shadow">
             <CardContent className="p-6">
-              <h2 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px" }}>Frame History</h2>
+              <h2 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "6px" }}>Frame History</h2>
               {frameHistory.map((frame, index) => (
-                <div key={index} style={{fontSize: "28px", padding: "12px 0", borderBottom: "1px solid #ccc"}}>
-                  Frame {index + 1}: {playerNames.A} {frame.A} - {frame.B} {playerNames.B}
+                <div key={index} style={{fontSize: "16px", padding: "6px 0", borderBottom: "1px solid #ccc"}}>
+                  F. {index + 1}: {playerNames.A} ({frame.A} - {frame.B}) {playerNames.B}
                 </div>
               ))}
             </CardContent>
