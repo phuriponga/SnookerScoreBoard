@@ -5,7 +5,7 @@ import { Card, CardContent } from "../components/ui/card"
 import { Button } from "../components/ui/button"
 
 type Player = 'A' | 'B'
-type Color = 'red' | 'yellow' | 'green' | 'brown' | 'blue' | 'pink' | 'black' | 'white'
+type Color = 'red' | 'yellow' | 'green' | 'brown' | 'blue' | 'pink' | 'black'
 
 type Action = {
   player: Player
@@ -23,7 +23,6 @@ const COLOR_POINTS: Record<Color, number> = {
   blue: 5,
   pink: 6,
   black: 7,
-  white: 0,
 }
 
 const COLOR_ORDER: Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
@@ -36,7 +35,6 @@ const BALL_IMAGES: Record<Color | 'red', string> = {
   blue: '/balls/blue.png',
   pink: '/balls/pink.png',
   black: '/balls/black.png',
-  white: '/balls/white.png',
 }
 
 import Image from 'next/image'
@@ -194,17 +192,17 @@ export default function SnookerScoreboardApp() {
                   color: currentPlayer === p ? "white" : "black",
                   border: "4px solid black",
                   borderRadius: "24px",
-                  padding: "18px"
+                  padding: "12px"
                 }}
               >
-                <h1>{playerNames[p]}</h1>
-                <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "16px 0", textAlign: "center" }}>{scores[p]}</h1>
+                <h1 style={{ fontSize: "130px", fontWeight: "bold" }}>{playerNames[p]}</h1>
+                <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "12px 0", textAlign: "center" }}>{scores[p]}</h1>
                 <div>Won: {frames[p]} frame(s)</div>
               </div>
             ))}
           </CardContent>
         </Card>
-        <div style={{ height: "12px" }} />
+        <div style={{ height: "8px" }} />
         <Card className="rounded-3xl shadow">
           <CardContent style={{
               display: "grid",
@@ -217,7 +215,7 @@ export default function SnookerScoreboardApp() {
             <h3>Snookers Needed: {snookersRequired}</h3>
           </CardContent>
         </Card>
-        <div style={{ height: "14px" }} />
+        <div style={{ height: "8px" }} />
         <div className="grid grid-cols-4 gap-4">
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
@@ -227,14 +225,14 @@ export default function SnookerScoreboardApp() {
               <Image src={BALL_IMAGES[c]} alt={`${c} ball`} width={88} height={88} />
             </Button>
           ))}
-          <br />      
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(4)}>Foul +4</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(5)}>Foul +5</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(6)}>Foul +6</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={() => foul(7)}>Foul +7</Button>
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={undo}>Undo</Button>
+          <div style={{ height: "8px" }} />     
+          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(4)}>Foul +4</Button>
+          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(5)}>Foul +5</Button>
+          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(6)}>Foul +6</Button>
+          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(7)}>Foul +7</Button>
+          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={undo}>Undo</Button>
           <div style={{ height: "24px" }} />
-          <Button className="h-88 w-full text-3xl font-bold rounded-5xl" onClick={endFrame}>End Frame</Button>
+          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={endFrame}>End Frame</Button>
           <span className="text-xl items-center justify-center">[Developed by &copy; Phuripong - April 2026]</span>
         </div>
         
