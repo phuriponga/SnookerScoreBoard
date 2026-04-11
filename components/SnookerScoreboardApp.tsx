@@ -13,6 +13,8 @@ type Action = {
   label: string
   redsRemaining: number
   phase: 'reds' | 'colors'
+  expectedNext: 'red' | 'color'
+  nextColorIndex: number
 }
 
 const COLOR_POINTS: Record<Color, number> = {
@@ -71,7 +73,7 @@ export default function SnookerScoreboardApp() {
 
   function addScore(points: number, label: string) {
     setScores(prev => ({ ...prev, [currentPlayer]: prev[currentPlayer] + points }))
-    setHistory(prev => [...prev, { player: currentPlayer, points, label, redsRemaining, phase }])
+    setHistory(prev => [...prev, { player: currentPlayer, points, label, redsRemaining, phase, expectedNext, nextColorIndex }])
   }
 
   function potRed() {
@@ -121,7 +123,7 @@ export default function SnookerScoreboardApp() {
     const other = currentPlayer === 'A' ? 'B' : 'A'
     setScores(prev => ({ ...prev, [other]: prev[other] + points }))
     setCurrentPlayer(other)
-    setHistory(prev => [...prev, { player: other, points, label: `Foul ${points}`, redsRemaining, phase }])
+    setHistory(prev => [...prev, { player: other, points, label: `Foul ${points}`, redsRemaining, phase, expectedNext, nextColorIndex }])
   }
 
   function switchTurn(player: Player) {
@@ -146,6 +148,8 @@ export default function SnookerScoreboardApp() {
     setHistory(prev => prev.slice(0, -1))
     setRedsRemaining(last.redsRemaining)
     setPhase(last.phase)
+    setExpectedNext(last.expectedNext)
+    setNextColorIndex(last.nextColorIndex)
   }
 
 function endFrame(finalScores = scores) {
