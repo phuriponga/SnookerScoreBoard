@@ -255,7 +255,19 @@ function endFrame(finalScores = scores) {
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={undo}>Undo</Button>
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => endFrame()}>End Frame</Button>
           <div style={{ height: "24px" }} />
-          <span className="text-xl items-center justify-center">[Developed by &copy; Phuripong - April 2026]</span>
+          //Show fram history
+          <Card className="rounded-3xl shadow">
+            <CardContent className="p-6">
+              <h2 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px" }}>Frame History</h2>
+              {frameHistory.map((frame, index) => (
+                <div key={index} style={{fontSize: "28px", padding: "12px 0", borderBottom: "1px solid #ccc"}}>
+                  Frame {index + 1}: {playerNames.A} {frame.A} - {frame.B} {playerNames.B}
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+          <div style={{ height: "24px" }} />
+          <span className="text-lg text-gray-400 text-center block">[Developed by &copy; Phuripong - Stockholm: April 2026]</span>
         </div>
         
       </div>
