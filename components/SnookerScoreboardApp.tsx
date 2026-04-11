@@ -40,6 +40,7 @@ const BALL_IMAGES: Record<Color | 'red', string> = {
 import Image from 'next/image'
 
 export default function SnookerScoreboardApp() {
+  const [frameHistory, setFrameHistory] = useState<{ A: number; B: number }[]>([])
   const [playerNames, setPlayerNames] = useState({ A: 'PlayerA', B: 'PlayerB' })
   const [scores, setScores] = useState({ A: 0, B: 0 })
   const [frames, setFrames] = useState({ A: 0, B: 0 })
@@ -143,8 +144,11 @@ export default function SnookerScoreboardApp() {
 
   function endFrame() {
     const winner = scores.A >= scores.B ? 'A' : 'B'
+    setFrameHistory(prev => [...prev, { A: scores.A, B: scores.B }])
     setFrames(prev => ({ ...prev, [winner]: prev[winner] + 1 }))
 
+    alert(`${playerNames[winner]} wins the frame! 🎉`)
+    
     setScores({ A: 0, B: 0 })
     setCurrentPlayer('A')
     setRedsRemaining(15)
@@ -197,7 +201,7 @@ export default function SnookerScoreboardApp() {
               >
                 <h1 style={{ fontSize: "32px", fontWeight: "bold", margin: "1px 0" }}>{playerNames[p]}</h1>
                 <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "8px 0", textAlign: "center" }}>{scores[p]}</h1>
-                <div>Won: {frames[p]} frame(s)</div>
+                <div>Won: {frames[p]} frame(s) - ({frameHistory.map((frame, index) => ({frame.A} : {frame.B},))})</div>
               </div>
             ))}
           </CardContent>
