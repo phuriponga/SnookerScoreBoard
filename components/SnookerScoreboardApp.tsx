@@ -195,8 +195,8 @@ export default function SnookerScoreboardApp() {
                   padding: "12px"
                 }}
               >
-                <h1 style={{ fontSize: "130px", fontWeight: "bold" }}>{playerNames[p]}</h1>
-                <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "12px 0", textAlign: "center" }}>{scores[p]}</h1>
+                <h1 style={{ fontSize: "32px", fontWeight: "bold" }}>{playerNames[p]}</h1>
+                <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "8px 0", textAlign: "center" }}>{scores[p]}</h1>
                 <div>Won: {frames[p]} frame(s)</div>
               </div>
             ))}
@@ -226,13 +226,13 @@ export default function SnookerScoreboardApp() {
             </Button>
           ))}
           <div style={{ height: "8px" }} />     
-          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(4)}>Foul +4</Button>
-          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(5)}>Foul +5</Button>
-          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(6)}>Foul +6</Button>
-          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={() => foul(7)}>Foul +7</Button>
-          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={undo}>Undo</Button>
+          <Button className="h-32 w-full text-5xl font-bold rounded-3xl" onClick={() => foul(4)}>Foul +4</Button>
+          <Button className="h-32 w-full text-5xl font-bold rounded-3xl" onClick={() => foul(5)}>Foul +5</Button>
+          <Button className="h-32 w-full text-5xl font-bold rounded-3xl" onClick={() => foul(6)}>Foul +6</Button>
+          <Button className="h-32 w-full text-5xl font-bold rounded-3xl" onClick={() => foul(7)}>Foul +7</Button>
+          <Button className="h-32 w-full text-5xl font-bold rounded-3xl" onClick={undo}>Undo</Button>
+          <Button className="h-32 w-full text-5xl font-bold rounded-3xl bg-yellow-500 text-black" onClick={endFrame}>End Frame</Button>
           <div style={{ height: "24px" }} />
-          <Button className="h-32 w-full text-3xl font-bold rounded-3xl" onClick={endFrame}>End Frame</Button>
           <span className="text-xl items-center justify-center">[Developed by &copy; Phuripong - April 2026]</span>
         </div>
         
