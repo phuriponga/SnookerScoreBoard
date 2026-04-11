@@ -107,8 +107,8 @@ export default function SnookerScoreboardApp() {
     if (nextColorIndex < COLOR_ORDER.length - 1) {
       setNextColorIndex(i => i + 1)
     } else {
-      alert(`${pts} : ${color} : ${nextColorIndex} wins the frame!`)
-      endFrame()
+      // last black: delay endFrame so score updates first
+      setTimeout(() => endFrame(), 100)
     }
   }
 
