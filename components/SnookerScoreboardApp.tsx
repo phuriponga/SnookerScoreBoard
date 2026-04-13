@@ -153,6 +153,14 @@ export default function SnookerScoreboardApp() {
   }
 
 function endFrame(finalScores = scores) {
+  //Last black was potted; but re-spot needed
+  if (phase === 'colors' && nextColorIndex === COLOR_ORDER.length - 1 && finalScores.A === finalScores.B) {
+    alert(`Please re-spot the black! :)`)
+    setNextColorIndex(5)
+    return
+  }
+
+  //Ending frame
   const winner = finalScores.A >= finalScores.B ? 'A' : 'B'
 
   setFrameHistory(prev => [
