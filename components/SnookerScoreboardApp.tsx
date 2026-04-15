@@ -191,7 +191,7 @@ function endFrame(finalScores = scores) {
     <div className="min-h-screen bg-slate-100 p-6">
       <div className="max-w-6xl mx-auto grid gap-6">
         <Card className="rounded-3xl shadow">
-          <CardContent className="p-4 grid grid-cols-2 gap-4">
+          <CardContent style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px"}}>
             {(['A', 'B'] as Player[]).map(p => (
               <input
                 key={p}
@@ -209,7 +209,7 @@ function endFrame(finalScores = scores) {
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              gap: "12px"
+              gap: "8px"
             }}
           >
             {(['A', 'B'] as Player[]).map(p => (
