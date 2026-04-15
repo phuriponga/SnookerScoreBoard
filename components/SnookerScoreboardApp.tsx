@@ -209,7 +209,7 @@ function endFrame(finalScores = scores) {
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              gap: "18px"
+              gap: "12px"
             }}
           >
             {(['A', 'B'] as Player[]).map(p => (
@@ -225,7 +225,7 @@ function endFrame(finalScores = scores) {
                   padding: "12px"
                 }}
               >
-                <h1 style={{ fontSize: "32px", fontWeight: "bold", margin: "1px 0" }}>{playerNames[p]}</h1>
+                <h1 style={{ fontSize: "40px", fontWeight: "bold", margin: "1px 0" }}>{playerNames[p]}</h1>
                 <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "8px 0", textAlign: "center" }}>{scores[p]}</h1>
                 <div>Won: {frames[p]} frame(s) </div>
               </div>
@@ -269,7 +269,15 @@ function endFrame(finalScores = scores) {
               <h2 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "6px" }}>Frame History</h2>
               {frameHistory.map((frame, index) => (
                 <div key={index} style={{fontSize: "16px", padding: "6px 0", borderBottom: "1px solid #ccc"}}>
-                  F. {index + 1}: {playerNames.A} ({frame.A} - {frame.B}) {playerNames.B}
+                  F.{index + 1} : {playerNames.A} (
+                  <span style={{fontWeight: frame.A > frame.B ? "bold" : "normal", color: frame.A > frame.B ? "green" : "inherit"}}>
+                    {frame.A}
+                  </span>
+                  {" - "}
+                  <span style={{fontWeight: frame.B > frame.A ? "bold" : "normal", color: frame.B > frame.A ? "green" : "inherit"}}>
+                    {frame.B}
+                  </span>
+                  ) {playerNames.B}
                 </div>
               ))}
             </CardContent>
