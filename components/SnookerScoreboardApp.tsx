@@ -344,10 +344,10 @@ function endFrame(finalScores = scores) {
             />
       
             <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
-              <Button variant="outline" onClick={() => closeRenameModal()}> 
+              <Button onClick={closeRenameModal} style={{backgroundColor: "#e5e7eb", color: "#111827"}}>
                 Cancel
               </Button>
-              <Button onClick={() => savePlayerName()}>
+              <Button onClick={savePlayerName} style={{backgroundColor: "#e5e7eb", color: "#111827"}}>
                 Save
               </Button>
             </div>
