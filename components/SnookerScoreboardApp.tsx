@@ -325,16 +325,17 @@ function endFrame(finalScores = scores) {
             }}
           >
             <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "12px" }}>
-              Rename Player
+              Rename Player:
             </h2>
       
             <input
               autoFocus
               value={tempName}
+              onFocus={(e) => e.target.select()}
               onChange={(e) => setTempName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && savePlayerName()}
               style={{
-                width: "100%",
+                width: "90%",
                 padding: "14px",
                 fontSize: "20px",
                 borderRadius: "16px",
