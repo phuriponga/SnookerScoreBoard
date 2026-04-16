@@ -44,6 +44,10 @@ import Image from 'next/image'
 export default function SnookerScoreboardApp() {
   const [frameHistory, setFrameHistory] = useState<{ A: number; B: number }[]>([])
   const [playerNames, setPlayerNames] = useState({ A: 'PlayerA', B: 'PlayerB' })
+  
+  const [renameTarget, setRenameTarget] = useState<Player | null>(null)
+  const [tempName, setTempName] = useState('')
+  
   const [scores, setScores] = useState({ A: 0, B: 0 })
   const [frames, setFrames] = useState({ A: 0, B: 0 })
   const [currentPlayer, setCurrentPlayer] = useState<Player>('A')
@@ -141,6 +145,28 @@ export default function SnookerScoreboardApp() {
     }
   }
 
+  function openRenameModal(player: Player) {
+    setRenameTarget(player)
+    setTempName(playerNames[player])
+  }
+  
+  function savePlayerName() {
+    if (!renameTarget || !tempName.trim()) return
+  
+    setPlayerNames(prev => ({
+      ...prev,
+      [renameTarget]: tempName.trim()
+    }))
+  
+    setRenameTarget(null)
+    setTempName('')
+  }
+  
+  function closeRenameModal() {
+    setRenameTarget(null)
+    setTempName('')
+  }
+  
   function undo() {
     const last = history[history.length - 1]
     if (!last) return
@@ -190,19 +216,6 @@ function endFrame(finalScores = scores) {
   return (
     <div className="min-h-screen bg-slate-100 p-6">
       <div className="max-w-6xl mx-auto grid gap-6">
-        <Card className="rounded-3xl shadow">
-          <CardContent style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1px"}}>
-            {(['A', 'B'] as Player[]).map(p => (
-              <input
-                key={p}
-                value={playerNames[p]}
-                onChange={(e) => setPlayerNames(prev => ({ ...prev, [p]: e.target.value }))}
-                className="rounded-2xl border p-4 text-2xl font-semibold"
-                placeholder={`Player ${p}`}
-              />
-            ))}
-          </CardContent>
-        </Card>
 
         <Card className="rounded-3xl shadow">
           <CardContent
@@ -225,7 +238,7 @@ function endFrame(finalScores = scores) {
                   padding: "12px"
                 }}
               >
-                <h1 style={{ fontSize: "40px", fontWeight: "bold", margin: "1px 0" }}>{playerNames[p]}</h1>
+                <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "40px", fontWeight: "bold", margin: "1px 0", cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
                 <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "8px 0", textAlign: "center" }}>{scores[p]}</h1>
                 <div>Won: {frames[p]} frame(s) </div>
               </div>
@@ -285,8 +298,63 @@ function endFrame(finalScores = scores) {
           <div style={{ height: "24px" }} />
           <span className="text-lg text-gray-400 text-center block">[Developed by &copy; Phuripong - Stockholm: April 2026]</span>
         </div>
-        
       </div>
+
+      {renameTarget && (
+        <div
+          onClick={closeRenameModal}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "white",
+              borderRadius: "24px",
+              padding: "24px",
+              width: "90%",
+              maxWidth: "420px",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.2)"
+            }}
+          >
+            <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "12px" }}>
+              Rename Player
+            </h2>
+      
+            <input
+              autoFocus
+              value={tempName}
+              onChange={(e) => setTempName(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && savePlayerName()}
+              style={{
+                width: "100%",
+                padding: "14px",
+                fontSize: "20px",
+                borderRadius: "16px",
+                border: "1px solid #ccc",
+                marginBottom: "20px"
+              }}
+            />
+      
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
+              <Button variant="outline" onClick={closeRenameModal}>
+                Cancel
+              </Button>
+              <Button onClick={savePlayerName}>
+                Save
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      
     </div>
   )
 }
