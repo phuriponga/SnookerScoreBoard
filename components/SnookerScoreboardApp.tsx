@@ -310,7 +310,7 @@ function endFrame(finalScores = scores) {
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
-                  <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: 0, lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
+                  <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 25px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
                 </div>  
                 <div>Won: {frames[p]} frame(s) </div>
               </div>
