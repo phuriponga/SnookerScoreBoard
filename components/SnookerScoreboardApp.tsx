@@ -308,8 +308,10 @@ function endFrame(finalScores = scores) {
                   padding: "12px"
                 }}
               >
-                <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "40px", fontWeight: "bold", margin: "1px 0", cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
-                <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "8px 0", textAlign: "center" }}>{scores[p]}</h1>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
+                  <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: 0, lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
+                </div>  
                 <div>Won: {frames[p]} frame(s) </div>
               </div>
             ))}
@@ -366,7 +368,7 @@ function endFrame(finalScores = scores) {
             </CardContent>
           </Card>
           <div style={{ height: "24px" }} />
-          <span className="text-lg text-gray-400 text-center block">[Developed by &copy; Phuripong - Stockholm: April 2026]</span>
+          <span className="text-lg text-gray-400 text-center block">[&copy; Phuripong - Stockholm: April 2026]</span>
         </div>
       </div>
 
