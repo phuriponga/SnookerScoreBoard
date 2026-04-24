@@ -44,7 +44,6 @@ import Image from 'next/image'
 export default function SnookerScoreboardApp() {
   const [frameHistory, setFrameHistory] = useState<{ A: number; B: number }[]>([])
   const [playerNames, setPlayerNames] = useState({ A: 'PlayerA', B: 'PlayerB' })
-  
   const [renameTarget, setRenameTarget] = useState<Player | null>(null)
   const [tempName, setTempName] = useState('')
   
@@ -68,6 +67,26 @@ export default function SnookerScoreboardApp() {
     return total
   }, [history, currentPlayer])
 
+  const highBreak = useMemo(() => {
+    const result: Record<Player, number> = { A: 0, B: 0 }
+  
+    let temp: Record<Player, number> = { A: 0, B: 0 }
+    let lastPlayer: Player | null = null
+  
+    for (const h of history) {
+      if (h.player !== lastPlayer) {
+        temp[h.player] = 0
+      }
+  
+      temp[h.player] += h.points
+      result[h.player] = Math.max(result[h.player], temp[h.player])
+  
+      lastPlayer = h.player
+    }
+  
+    return result
+  }, [history])
+
   const remainingPoints = useMemo(() => {
     if (phase === 'reds') {
       return redsRemaining * 8 + 27
@@ -76,8 +95,16 @@ export default function SnookerScoreboardApp() {
   }, [redsRemaining, phase, nextColorIndex])
 
   function addScore(points: number, label: string) {
-    setScores(prev => ({ ...prev, [currentPlayer]: prev[currentPlayer] + points }))
-    setHistory(prev => [...prev, { player: currentPlayer, points, label, redsRemaining, phase, expectedNext, nextColorIndex }])
+    const newScore = scores[currentPlayer] + points
+  
+    setScores(prev => ({ ...prev, [currentPlayer]: newScore }))
+  
+    const newHistory = [
+      ...history,
+      { player: currentPlayer, points, label, redsRemaining, phase, expectedNext, nextColorIndex }
+    ]
+  
+    setHistory(newHistory)
   }
 
   function potRed() {
@@ -282,7 +309,7 @@ function endFrame(finalScores = scores) {
               <h2 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "6px" }}>Frame History</h2>
               {frameHistory.map((frame, index) => (
                 <div key={index} style={{fontSize: "16px", padding: "6px 0", borderBottom: "1px solid #ccc"}}>
-                  F.{index + 1} : {playerNames.A} (
+                  F.{index + 1} : {playerNames.A} (HB:{highBreak.A}) (
                   <span style={{fontWeight: frame.A > frame.B ? "bold" : "normal", color: frame.A > frame.B ? "green" : "inherit"}}>
                     {frame.A}
                   </span>
@@ -290,7 +317,7 @@ function endFrame(finalScores = scores) {
                   <span style={{fontWeight: frame.B > frame.A ? "bold" : "normal", color: frame.B > frame.A ? "green" : "inherit"}}>
                     {frame.B}
                   </span>
-                  ) {playerNames.B}
+                  ) {playerNames.B} (HB:{highBreak.B})
                 </div>
               ))}
             </CardContent>
