@@ -15,6 +15,7 @@ type Action = {
   phase: 'reds' | 'colors'
   expectedNext: 'red' | 'color'
   nextColorIndex: number
+  breakEnd?: boolean
 }
 
 const COLOR_POINTS: Record<Color, number> = {
@@ -42,7 +43,7 @@ const BALL_IMAGES: Record<Color | 'red', string> = {
 import Image from 'next/image'
 
 export default function SnookerScoreboardApp() {
-  const [frameHistory, setFrameHistory] = useState<{ A: number; B: number }[]>([])
+  const [frameHistory, setFrameHistory] = useState<{ A: number; B: number; highBreakA: number; highBreakB: number }[]>([])
   const [playerNames, setPlayerNames] = useState({ A: 'PlayerA', B: 'PlayerB' })
   const [renameTarget, setRenameTarget] = useState<Player | null>(null)
   const [tempName, setTempName] = useState('')
@@ -61,6 +62,7 @@ export default function SnookerScoreboardApp() {
     let total = 0
     for (let i = history.length - 1; i >= 0; i--) {
       const h = history[i]
+      if (h.breakEnd) break //STOP if break ended
       if (h.player !== currentPlayer) break
       total += h.points
     }
@@ -69,19 +71,16 @@ export default function SnookerScoreboardApp() {
 
   const highBreak = useMemo(() => {
     const result: Record<Player, number> = { A: 0, B: 0 }
-  
     let temp: Record<Player, number> = { A: 0, B: 0 }
-    let lastPlayer: Player | null = null
   
     for (const h of history) {
-      if (h.player !== lastPlayer) {
+      if (h.breakEnd) {
         temp[h.player] = 0
+        continue
       }
   
       temp[h.player] += h.points
       result[h.player] = Math.max(result[h.player], temp[h.player])
-  
-      lastPlayer = h.player
     }
   
     return result
@@ -152,13 +151,52 @@ export default function SnookerScoreboardApp() {
 
   function foul(points: number) {
     const other = currentPlayer === 'A' ? 'B' : 'A'
+
+    setHistory(prev => [
+      ...prev,
+      {
+        player: currentPlayer,
+        points: 0,
+        label: 'Break End',
+        redsRemaining,
+        phase,
+        expectedNext,
+        nextColorIndex,
+        breakEnd: true
+      },
+      {
+        player: other,
+        points,
+        label: `Foul ${points}`,
+        redsRemaining,
+        phase,
+        expectedNext,
+        nextColorIndex
+      }
+    ])
+    
     setScores(prev => ({ ...prev, [other]: prev[other] + points }))
     setCurrentPlayer(other)
-    setHistory(prev => [...prev, { player: other, points, label: `Foul ${points}`, redsRemaining, phase, expectedNext, nextColorIndex }])
   }
 
   function switchTurn(player: Player) {
     if (currentPlayer !== player) {
+
+      //Mark end of break for current player
+      setHistory(prev => [
+        ...prev,
+        {
+          player: currentPlayer,
+          points: 0,
+          label: 'Break End',
+          redsRemaining,
+          phase,
+          expectedNext,
+          nextColorIndex,
+          breakEnd: true
+        }
+      ])
+      
       setCurrentPlayer(player)
     }
     if (redsRemaining <= 0) {
@@ -218,7 +256,12 @@ function endFrame(finalScores = scores) {
 
   setFrameHistory(prev => [
     ...prev,
-    { A: finalScores.A, B: finalScores.B }
+    {
+      A: finalScores.A,
+      B: finalScores.B,
+      highBreakA: highBreak.A,
+      highBreakB: highBreak.B
+    }
   ])
 
   setFrames(prev => ({
@@ -309,7 +352,7 @@ function endFrame(finalScores = scores) {
               <h2 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "6px" }}>Frame History</h2>
               {frameHistory.map((frame, index) => (
                 <div key={index} style={{fontSize: "16px", padding: "6px 0", borderBottom: "1px solid #ccc"}}>
-                  F.{index + 1} : {playerNames.A} (HB:{highBreak.A}) (
+                  F.{index + 1} : {playerNames.A} (
                   <span style={{fontWeight: frame.A > frame.B ? "bold" : "normal", color: frame.A > frame.B ? "green" : "inherit"}}>
                     {frame.A}
                   </span>
@@ -317,7 +360,7 @@ function endFrame(finalScores = scores) {
                   <span style={{fontWeight: frame.B > frame.A ? "bold" : "normal", color: frame.B > frame.A ? "green" : "inherit"}}>
                     {frame.B}
                   </span>
-                  ) {playerNames.B} (HB:{highBreak.B})
+                  ) {playerNames.B} = [HB: {frame.highBreakA} - {frame.highBreakB}]
                 </div>
               ))}
             </CardContent>
