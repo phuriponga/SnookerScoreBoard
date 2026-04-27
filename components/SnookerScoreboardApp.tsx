@@ -68,7 +68,7 @@ const BALL_EMOJI: Record<Color, string> & { red: string } = {
   black: '⚫',
 }
 
-const : Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
+const COLOR_ORDER: Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
 
 const BALL_IMAGES: Record<Color | 'red', string> = {
   red: '/balls/red.png',
