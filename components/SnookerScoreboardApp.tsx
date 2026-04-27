@@ -90,7 +90,6 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
       }
     
       const newReds = state.redsRemaining - 1
-      const isLastRed = newReds === 0
     
       return {
         ...state,
@@ -99,8 +98,6 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
           [state.currentPlayer]: state.scores[state.currentPlayer] + 1
         },
         redsRemaining: newReds,
-    
-        // after red → must play color
         expectedNext: 'color',
     
         history: [
@@ -124,13 +121,12 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
       const pts = COLOR_POINTS[color]
     
       // =========================
-      // 1. REDS PHASE (including last red transition)
+      // REDS PHASE
       // =========================
       if (state.phase === 'reds') {
         if (state.expectedNext !== 'color') return state
     
-        const newReds = state.redsRemaining - 1
-        const isLastRed = newReds === 0
+        const isLastRed = state.redsRemaining === 0
     
         return {
           ...state,
@@ -138,12 +134,11 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
             ...state.scores,
             [state.currentPlayer]: state.scores[state.currentPlayer] + pts
           },
-          redsRemaining: newReds,
     
-          // after color → go back to red UNLESS reds are finished
-          expectedNext: 'red',
+          // DO NOT TOUCH redsRemaining HERE
+          expectedNext: isLastRed ? 'color' : 'red',
     
-          // IMPORTANT: only switch phase AFTER this color is played
+          // ONLY move to colors phase AFTER this shot IF no reds left
           phase: isLastRed ? 'colors' : 'reds',
           nextColorIndex: isLastRed ? 0 : state.nextColorIndex,
     
@@ -153,7 +148,7 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
               player: state.currentPlayer,
               points: pts,
               label: color,
-              redsRemaining: newReds,
+              redsRemaining: state.redsRemaining,
               phase: state.phase,
               expectedNext: state.expectedNext,
               nextColorIndex: state.nextColorIndex,
@@ -164,7 +159,7 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
       }
     
       // =========================
-      // 2. COLORS PHASE (strict order)
+      // COLORS PHASE
       // =========================
       if (state.phase !== 'colors') return state
     
@@ -173,8 +168,6 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
     
       if (color !== expectedColor) return state
     
-      const isLastColor = state.nextColorIndex === COLOR_ORDER.length - 1
-    
       return {
         ...state,
         scores: {
@@ -182,9 +175,6 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
           [state.currentPlayer]: state.scores[state.currentPlayer] + pts
         },
         nextColorIndex: state.nextColorIndex + 1,
-    
-        // optional: you can mark frame end here if black
-        phase: isLastColor ? 'colors' : state.phase,
     
         history: [
           ...state.history,
