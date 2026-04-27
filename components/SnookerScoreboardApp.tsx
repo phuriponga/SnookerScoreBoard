@@ -244,17 +244,24 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
       if (state.currentPlayer === action.player) return state
     
       const noRedsLeft = state.redsRemaining === 0
+      const enteringColorsPhase = noRedsLeft && state.phase === 'reds'
     
       return {
         ...state,
         currentPlayer: action.player,
     
-        // THIS IS THE KEY FIX
-        phase: noRedsLeft ? 'colors' : state.phase,
-        nextColorIndex: noRedsLeft ? 0 : state.nextColorIndex,
+        // ✅ Only switch phase ONCE
+        phase: enteringColorsPhase ? 'colors' : state.phase,
     
-        // reset expectation correctly
-        expectedNext: noRedsLeft ? 'color' : 'red',
+        // ✅ Only reset index ONCE
+        nextColorIndex: enteringColorsPhase ? 0 : state.nextColorIndex,
+    
+        // ✅ Set expectation correctly
+        expectedNext: enteringColorsPhase
+          ? 'color'
+          : noRedsLeft
+          ? 'color'
+          : 'red',
     
         history: [
           ...state.history,
@@ -473,7 +480,7 @@ function endFrame(finalScores = scores) {
                   <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
                   <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 35px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
                 </div> 
-                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: currentPlayer === p ? "#00cc66" : "#f6f8fc", borderRadius: "8px"}}>Potted: 
+                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: currentPlayer === p ? "#049e51" : "#f6f8fc", borderRadius: "8px"}}>Potted: 
                   {playerPots[p].map((shot, i) => (
                     <span key={i} style={{ fontSize: "18px", lineHeight: 1 }}>{shot.ball ? BALL_EMOJI[shot.ball] : ''}</span>
                   ))}
