@@ -18,6 +18,14 @@ type Action = {
   breakEnd?: boolean
 }
 
+type GameAction =
+  | { type: 'POT_RED' }
+  | { type: 'POT_COLOR'; color: Color }
+  | { type: 'FOUL'; points: number }
+  | { type: 'SWITCH_PLAYER'; player: Player }
+  | { type: 'UNDO' }
+  | { type: 'RESET_FRAME' }
+
 const COLOR_POINTS: Record<Color, number> = {
   red: 1,
   yellow: 2,
@@ -141,7 +149,7 @@ export default function SnookerScoreboardApp() {
     return result
   }, [history])
 
-  function reducer(state: GameState, action: any): GameState {
+  function reducer(state: GameState, action: GameAction): GameState
     switch (action.type) {
   
       case 'POT_RED': {
@@ -172,7 +180,9 @@ export default function SnookerScoreboardApp() {
       }
   
       case 'POT_COLOR': {
-        const pts = COLOR_POINTS[action.color]
+        
+        const color = action.color
+        const pts = COLOR_POINTS[color]
   
         if (state.phase === 'reds') {
           if (state.expectedNext !== 'color') return state
