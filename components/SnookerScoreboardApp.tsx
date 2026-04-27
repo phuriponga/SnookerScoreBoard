@@ -482,7 +482,17 @@ function endFrame(finalScores = scores) {
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
           </Button>
           {COLOR_ORDER.map(c => (
-            <Button key={c} className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={() => potColor(c)}>
+            <Button
+              key={c}
+              className="h-24 text-xl rounded-2xl flex flex-col gap-2"
+              onClick={() => potColor(c)}
+          
+              // ADD THIS LINE
+              disabled={
+                phase === 'colors' &&
+                c !== COLOR_ORDER[nextColorIndex]
+              }
+            >
               <Image src={BALL_IMAGES[c]} alt={`${c} ball`} width={88} height={88} />
             </Button>
           ))}
