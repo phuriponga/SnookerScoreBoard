@@ -17,6 +17,7 @@ type Action = {
   expectedNext: 'red' | 'color'
   nextColorIndex: number
   breakEnd?: boolean
+  ball?: Color
 }
 
 type GameAction =
@@ -102,7 +103,8 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
              redsRemaining: state.redsRemaining,
              phase: state.phase,
              expectedNext: state.expectedNext,
-             nextColorIndex: state.nextColorIndex
+             nextColorIndex: state.nextColorIndex,
+             ball: 'red'
            }
          ]
        }
@@ -134,7 +136,8 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
                redsRemaining: state.redsRemaining,
                phase: state.phase,
                expectedNext: state.expectedNext,
-               nextColorIndex: state.nextColorIndex
+               nextColorIndex: state.nextColorIndex,
+               ball: action.color
              }
            ]
          }
@@ -416,10 +419,9 @@ function endFrame(finalScores = scores) {
                 </div>  
                 <div>Won: {frames[p]} frame(s) </div>
                 <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>
-                  {playerPots[p].map((shot, i) => {
-                  const key = shot.label.toLowerCase()
-                  return (<span key={i} style={{ fontSize: "18px", lineHeight: 1}}> {BALL_EMOJI[key] ?? ''}</span>)
-                  })}
+                  {playerPots[p].map((shot, i) => (
+                    <span key={i} style={{ fontSize: "18px", lineHeight: 1 }}>{shot.ball ? BALL_EMOJI[shot.ball] : ''}</span>
+                  ))}
                 </div>
               </div>
             ))}
