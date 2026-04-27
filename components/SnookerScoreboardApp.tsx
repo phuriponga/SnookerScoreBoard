@@ -96,8 +96,11 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
             [state.currentPlayer]: state.scores[state.currentPlayer] + 1
           },
           redsRemaining: newReds,
-          phase: newReds === 0 ? 'colors' : 'reds',
-          expectedNext: newReds === 0 ? 'color' : 'color',
+          expectedNext: 'color',
+        
+          // IMPORTANT: do NOT switch phase yet
+          phase: 'reds',
+        
           history: [
             ...state.history,
             {
@@ -105,26 +108,30 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
               points: 1,
               label: 'Red',
               redsRemaining: newReds,
-              phase: newReds === 0 ? 'colors' : 'reds',
-              expectedNext: state.expectedNext,
+              phase: state.phase,
+              expectedNext: 'color',
               nextColorIndex: state.nextColorIndex,
               ball: 'red'
             }
           ]
         }
      }
-  
+
     case 'POT_COLOR': {
       const color = action.color
       const pts = COLOR_POINTS[color]
+      const isFinalRedColorPhase = state.phase === 'reds' && state.redsRemaining === 0
     
       // =========================
-      // REDS PHASE (potting a color after a red)
+      // 1. REDS PHASE (including last-red transition)
       // =========================
       if (state.phase === 'reds') {
         if (state.expectedNext !== 'color') return state
     
-        return {
+        const newReds = state.redsRemaining
+        const isLastRedJustPotted = state.redsRemaining === 0
+    
+        const nextState: GameState = {
           ...state,
           scores: {
             ...state.scores,
@@ -137,7 +144,7 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
               player: state.currentPlayer,
               points: pts,
               label: color,
-              redsRemaining: state.redsRemaining,
+              redsRemaining: newReds,
               phase: state.phase,
               expectedNext: state.expectedNext,
               nextColorIndex: state.nextColorIndex,
@@ -145,47 +152,49 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
             }
           ]
         }
-      }
     
-      // =========================
-      // COLORS PHASE (end game sequence)
-      // =========================
-      if (state.phase === 'colors') {
-        const expectedColor = COLOR_ORDER[state.nextColorIndex]
-    
-        // safety: no more colors left
-        if (!expectedColor) return state
-    
-        // enforce strict order
-        if (color !== expectedColor) return state
-    
-        const newIndex = state.nextColorIndex + 1
-    
-        return {
-          ...state,
-          scores: {
-            ...state.scores,
-            [state.currentPlayer]: state.scores[state.currentPlayer] + pts
-          },
-          nextColorIndex: newIndex,
-          history: [
-            ...state.history,
-            {
-              player: state.currentPlayer,
-              points: pts,
-              label: color,
-              redsRemaining: state.redsRemaining,
-              phase: state.phase,
-              expectedNext: state.expectedNext,
-              nextColorIndex: state.nextColorIndex,
-              ball: color
-            }
-          ]
+        // ONLY AFTER the final color after last red
+        if (isLastRedJustPotted) {
+          nextState.phase = 'colors'
+          nextState.nextColorIndex = 0
         }
+    
+        return nextState
       }
     
-      return state
-    }       
+      // =========================
+      // 2. COLORS PHASE
+      // =========================
+      if (state.phase !== 'colors') return state
+    
+      const expectedColor = COLOR_ORDER[state.nextColorIndex]
+      if (!expectedColor) return state
+    
+      if (color !== expectedColor) return state
+    
+      return {
+        ...state,
+        scores: {
+          ...state.scores,
+          [state.currentPlayer]: state.scores[state.currentPlayer] + pts
+        },
+        nextColorIndex: state.nextColorIndex + 1,
+        history: [
+          ...state.history,
+          {
+            player: state.currentPlayer,
+            points: pts,
+            label: color,
+            redsRemaining: state.redsRemaining,
+            phase: state.phase,
+            expectedNext: state.expectedNext,
+            nextColorIndex: state.nextColorIndex,
+            ball: color
+          }
+        ]
+      }
+    }
+       
      case 'FOUL': {
        const other = state.currentPlayer === 'A' ? 'B' : 'A'
   
