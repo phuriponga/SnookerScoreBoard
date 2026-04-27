@@ -58,17 +58,6 @@ const initialState: GameState = {
   history: [],
 }
 
-//const BALL_EMOJI: Record<Color, string> & { red: string } = {
-const BALL_EMOJI: Record<Color, string> = {  
-  red: '🔴',
-  yellow: '🟡',
-  green: '🟢',
-  brown: '🟤',
-  blue: '🔵',
-  pink: '🟣',
-  black: '⚫',
-}
-
 const COLOR_ORDER: Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
 
 const BALL_IMAGES: Record<Color | 'red', string> = {
@@ -482,7 +471,28 @@ function endFrame(finalScores = scores) {
                 </div> 
                 <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: currentPlayer === p ? "#049e51" : "#f6f8fc", borderRadius: "8px"}}>Potted: 
                   {playerPots[p].map((shot, i) => (
-                    <span key={i} style={{ fontSize: "18px", lineHeight: 1 }}>{shot.ball ? BALL_EMOJI[shot.ball] : ''}</span>
+                    <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      {shot.ball && (
+                        <span
+                          style={{
+                            width: 14,
+                            height: 14,
+                            borderRadius: '50%',
+                            display: 'inline-block',
+                            backgroundColor: {
+                              red: '#d32f2f',
+                              yellow: '#fdd835',
+                              green: '#388e3c',
+                              brown: '#6d4c41',
+                              blue: '#1976d2',
+                              pink: '#f06292',
+                              black: '#000000',
+                            }[shot.ball],
+                            marginRight: 2
+                          }}
+                        />
+                      )}
+                    </span>
                   ))}
                 </div>
                 <div style={{ height: "8px" }} />
