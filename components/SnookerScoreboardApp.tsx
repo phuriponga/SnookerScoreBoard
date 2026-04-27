@@ -116,44 +116,42 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
        const color = action.color
        const pts = COLOR_POINTS[color]
   
-       if (state.phase === 'reds') {
-        if (state.expectedNext !== 'color') return state
-  
-         return {
-           ...state,
-           scores: {
-             ...state.scores,
-             [state.currentPlayer]: state.scores[state.currentPlayer] + pts
-           },
-           expectedNext: 'red',
-           phase: state.redsRemaining === 0 ? 'colors' : state.phase,
-           nextColorIndex: state.redsRemaining - 1 === 0 ? 0 : state.nextColorIndex,
-           history: [
-             ...state.history,
-             {
-               player: state.currentPlayer,
-               points: pts,
-               label: action.color,
-               redsRemaining: state.redsRemaining,
-               phase: state.phase,
-               expectedNext: state.expectedNext,
-               nextColorIndex: state.nextColorIndex,
-               ball: action.color
-             }
-           ]
-         }
-       }
+        if (state.phase === 'reds') {
+          if (state.expectedNext !== 'color') return state
+        
+          const newReds = state.redsRemaining
+        
+          return {
+            ...state,
+            scores: {
+              ...state.scores,
+              [state.currentPlayer]: state.scores[state.currentPlayer] + pts
+            },
+            expectedNext: 'red',
+            history: [
+              ...state.history,
+              {
+                player: state.currentPlayer,
+                points: pts,
+                label: action.color,
+                redsRemaining: newReds,
+                phase: state.phase,
+                expectedNext: state.expectedNext,
+                nextColorIndex: state.nextColorIndex,
+                ball: action.color
+              }
+            ]
+          }
+        }
   
         if (state.phase !== 'colors') return state
-        
-        const expectedColor = COLOR_ORDER[state.nextColorIndex]
-        
-        // already finished all colors
-        if (!expectedColor) return state
-        
-        // reject invalid attempt
-        if (action.color !== expectedColor) return state
   
+        if (state.phase === 'colors') {
+          const expectedColor = COLOR_ORDER[state.nextColorIndex]
+          if (!expectedColor) return state
+          if (action.color !== expectedColor) return state
+         }       
+        
        return {
          ...state,
          scores: {
