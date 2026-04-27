@@ -68,7 +68,7 @@ const BALL_EMOJI: Record<Color, string> & { red: string } = {
   black: '⚫',
 }
 
-const COLOR_ORDER: Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
+const : Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
 
 const BALL_IMAGES: Record<Color | 'red', string> = {
   red: '/balls/red.png',
@@ -143,8 +143,15 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
          }
        }
   
-       const expectedColor = COLOR_ORDER[state.nextColorIndex]
-       if (action.color !== expectedColor) return state
+        if (state.phase !== 'colors') return state
+        
+        const expectedColor = COLOR_ORDER[state.nextColorIndex]
+        
+        // already finished all colors
+        if (!expectedColor) return state
+        
+        // reject invalid attempt
+        if (action.color !== expectedColor) return state
   
        return {
          ...state,
@@ -277,6 +284,8 @@ export default function SnookerScoreboardApp() {
     nextColorIndex,
     history
   } = state
+
+  const isFrameComplete = phase === 'colors' && nextColorIndex >= .length
   
   const currentBreak = useMemo(() => {
     let total = 0
@@ -312,7 +321,7 @@ export default function SnookerScoreboardApp() {
     }
     return COLOR_ORDER.slice(nextColorIndex).reduce((a, c) => a + COLOR_POINTS[c], 0)
   }, [redsRemaining, phase, nextColorIndex])
-
+  
   const playerPots = useMemo(() => {
     const result: Record<Player, Action[]> = { A: [], B: [] }
   
@@ -328,6 +337,12 @@ export default function SnookerScoreboardApp() {
     return result
   }, [history])
 
+  React.useEffect(() => {
+    if (isFrameComplete) {
+      endFrame()
+    }
+  }, [isFrameComplete])
+  
   function openRenameModal(player: Player) {
     setRenameTarget(player)
     setTempName(playerNames[player])
@@ -352,7 +367,7 @@ export default function SnookerScoreboardApp() {
 
 function endFrame(finalScores = scores) {
   //Last black was potted; but re-spot needed
-  if (phase === 'colors' && nextColorIndex === COLOR_ORDER.length - 1 && finalScores.A === finalScores.B) {
+  if (phase === 'colors' && nextColorIndex === .length - 1 && finalScores.A === finalScores.B) {
     alert(`Please re-spot the black! :)`)
     dispatch({ type: 'RESPOT_BLACK' })
     return
@@ -449,7 +464,7 @@ function endFrame(finalScores = scores) {
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
           </Button>
-          {COLOR_ORDER.map(c => (
+          {.map(c => (
             <Button key={c} className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={() => potColor(c)}>
               <Image src={BALL_IMAGES[c]} alt={`${c} ball`} width={88} height={88} />
             </Button>
