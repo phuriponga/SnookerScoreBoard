@@ -162,7 +162,8 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
              redsRemaining: state.redsRemaining,
              phase: state.phase,
              expectedNext: state.expectedNext,
-             nextColorIndex: state.nextColorIndex
+             nextColorIndex: state.nextColorIndex,
+             ball: action.color
            }
          ]
        }
