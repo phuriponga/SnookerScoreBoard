@@ -116,83 +116,93 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
       }
     }
 
-    case 'POT_COLOR': {
-      const color = action.color
-      const pts = COLOR_POINTS[color]
-    
-      // =========================
-      // REDS PHASE
-      // =========================
-      if (state.phase === 'reds') {
-        if (state.expectedNext !== 'color') return state
-    
-        const isLastRed = state.redsRemaining === 0
-    
-        return {
-          ...state,
-          scores: {
-            ...state.scores,
-            [state.currentPlayer]: state.scores[state.currentPlayer] + pts
-          },
-    
-          // DO NOT TOUCH redsRemaining HERE
-          expectedNext: isLastRed ? 'color' : 'red',
-    
-          // ONLY move to colors phase AFTER this shot IF no reds left
-          phase: isLastRed ? 'colors' : 'reds',
-          nextColorIndex: isLastRed ? 0 : state.nextColorIndex,
-    
-          history: [
-            ...state.history,
-            {
-              player: state.currentPlayer,
-              points: pts,
-              label: color,
-              redsRemaining: state.redsRemaining,
-              phase: state.phase,
-              expectedNext: state.expectedNext,
-              nextColorIndex: state.nextColorIndex,
-              ball: color
-            }
-          ]
+     case 'POT_COLOR': {
+        const color = action.color
+        const pts = COLOR_POINTS[color]
+      
+        // =========================
+        // REDS PHASE
+        // =========================
+        if (state.phase === 'reds') {
+          if (state.expectedNext !== 'color') return state
+      
+          const isAfterLastRed = state.redsRemaining === 0
+      
+          return {
+            ...state,
+            scores: {
+              ...state.scores,
+              [state.currentPlayer]:
+                state.scores[state.currentPlayer] + pts
+            },
+      
+            // 🔑 After last red → stay on color, otherwise back to red
+            expectedNext: isAfterLastRed ? 'color' : 'red',
+      
+            // 🔑 Only switch to colors phase AFTER this shot (final color)
+            phase: isAfterLastRed ? 'colors' : 'reds',
+      
+            // 🔑 Reset order when entering colors phase
+            nextColorIndex: isAfterLastRed ? 0 : state.nextColorIndex,
+      
+            history: [
+              ...state.history,
+              {
+                player: state.currentPlayer,
+                points: pts,
+                label: color,
+                redsRemaining: state.redsRemaining,
+                phase: state.phase,
+                expectedNext: state.expectedNext,
+                nextColorIndex: state.nextColorIndex,
+                ball: color
+              }
+            ]
+          }
         }
-      }
       
-      // =========================
-      // COLORS PHASE
-      // =========================
-      if (state.phase === 'colors') {
-        const expectedColor = COLOR_ORDER[state.nextColorIndex]
+        // =========================
+        // COLORS PHASE (STRICT ORDER)
+        // =========================
+        if (state.phase === 'colors') {
+          const expectedColor = COLOR_ORDER[state.nextColorIndex]
       
-        if (!expectedColor) return state
+          if (!expectedColor) return state
       
-        // ONLY enforce order here
-        if (color !== expectedColor) return state
+          // 🔒 enforce Yellow → Green → Brown → ...
+          if (color !== expectedColor) return state
       
-        return {
-          ...state,
-          scores: {
-            ...state.scores,
-            [state.currentPlayer]: state.scores[state.currentPlayer] + pts
-          },
+          return {
+            ...state,
+            scores: {
+              ...state.scores,
+              [state.currentPlayer]:
+                state.scores[state.currentPlayer] + pts
+            },
       
-          // move forward in sequence
-          nextColorIndex: state.nextColorIndex + 1,
+            // 🔑 move to next color
+            nextColorIndex: state.nextColorIndex + 1,
       
-          history: [
-            ...state.history,
-            {
-              player: state.currentPlayer,
-              points: pts,
-              label: color,
-              redsRemaining: state.redsRemaining,
-              phase: state.phase,
-              expectedNext: state.expectedNext,
-              nextColorIndex: state.nextColorIndex,
-              ball: color
-            }
-          ]
+            // 🚫 DO NOT touch expectedNext here
+            // 🚫 DO NOT touch phase here
+      
+            history: [
+              ...state.history,
+              {
+                player: state.currentPlayer,
+                points: pts,
+                label: color,
+                redsRemaining: state.redsRemaining,
+                phase: state.phase,
+                expectedNext: state.expectedNext,
+                nextColorIndex: state.nextColorIndex,
+                ball: color
+              }
+            ]
+          }
         }
+      
+        return state
       }
             
      case 'FOUL': {
