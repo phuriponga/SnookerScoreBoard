@@ -28,6 +28,16 @@ const COLOR_POINTS: Record<Color, number> = {
   black: 7,
 }
 
+const BALL_EMOJI: Record<string, string> = {
+  red: '🔴',
+  yellow: '🟡',
+  green: '🟢',
+  brown: '🟤',
+  blue: '🔵',
+  pink: '🟣',
+  black: '⚫',
+}
+
 const COLOR_ORDER: Color[] = ['yellow', 'green', 'brown', 'blue', 'pink', 'black']
 
 const BALL_IMAGES: Record<Color | 'red', string> = {
@@ -93,6 +103,21 @@ export default function SnookerScoreboardApp() {
     return COLOR_ORDER.slice(nextColorIndex).reduce((a, c) => a + COLOR_POINTS[c], 0)
   }, [redsRemaining, phase, nextColorIndex])
 
+  const playerPots = useMemo(() => {
+    const result: Record<Player, Action[]> = { A: [], B: [] }
+  
+    for (const h of history) {
+      // ignore break markers and fouls
+      if (h.breakEnd) continue
+      if (h.points === 0) continue
+      if (h.label.startsWith('Foul')) continue
+  
+      result[h.player].push(h)
+    }
+  
+    return result
+  }, [history])
+  
   function addScore(points: number, label: string) {
     const newScore = scores[currentPlayer] + points
   
@@ -108,7 +133,7 @@ export default function SnookerScoreboardApp() {
 
   function potRed() {
     if (phase !== 'reds' || expectedNext !== 'red' || redsRemaining <= 0) return
-    addScore(1, 'Red')
+    addScore(1, 'red')
     setRedsRemaining(r => r - 1)
     setExpectedNext('color')
     if (redsRemaining - 1 === 0) {
@@ -310,6 +335,28 @@ function endFrame(finalScores = scores) {
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
+
+                  <div
+                    style={{
+                      marginTop: "1px",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "6px",
+                      justifyContent: "flex-start",
+                      backgroundColor: "#e5e7eb"
+                    }}
+                  >
+                    {playerPots[p].map((shot, i) => {
+                      const key = shot.label.toLowerCase()
+                  
+                      return (
+                        <span key={i} style={{ fontSize: "18px", lineHeight: 1}}>
+                          {BALL_EMOJI[key] ?? ''}
+                        </span>
+                      )
+                    })}
+                  </div>
+                  
                   <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 25px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
                 </div>  
                 <div>Won: {frames[p]} frame(s) </div>
