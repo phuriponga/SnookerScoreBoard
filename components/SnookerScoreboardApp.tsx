@@ -460,13 +460,14 @@ function endFrame(finalScores = scores) {
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
                   <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 35px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
-                </div>  
-                <div>Won: {frames[p]} frame(s) </div>
-              </div>
-              <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>
+                </div> 
+                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>Potted: 
                   {playerPots[p].map((shot, i) => (
                     <span key={i} style={{ fontSize: "18px", lineHeight: 1 }}>{shot.ball ? BALL_EMOJI[shot.ball] : ''}</span>
                   ))}
+                </div>
+                <div style={{ height: "8px" }} />
+                <div>Won: {frames[p]} frame(s) </div>
               </div>
             ))}
           </CardContent>
