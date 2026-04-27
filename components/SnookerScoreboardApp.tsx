@@ -324,47 +324,25 @@ function endFrame(finalScores = scores) {
               <div
                 onClick={() => switchTurn(p)}
                 key={p}
-                style={{
-                  flex: 1,
-                  backgroundColor: currentPlayer === p ? "green" : "white",
-                  color: currentPlayer === p ? "white" : "black",
-                  border: "4px solid black",
-                  borderRadius: "24px",
-                  padding: "12px"
-                }}
+                style={{flex: 1, backgroundColor: currentPlayer === p ? "green" : "white", color: currentPlayer === p ? "white" : "black", border: "4px solid black", borderRadius: "24px", padding: "12px"}}
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
-
-                  <div
-                    style={{
-                      marginTop: "1px",
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "6px",
-                      justifyContent: "flex-start",
-                      backgroundColor: "#e5e7eb"
-                    }}
-                  >
-                    {playerPots[p].map((shot, i) => {
-                      const key = shot.label.toLowerCase()
-                  
-                      return (
-                        <span key={i} style={{ fontSize: "18px", lineHeight: 1}}>
-                          {BALL_EMOJI[key] ?? ''}
-                        </span>
-                      )
-                    })}
-                  </div>
-                  
-                  <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 25px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
+                  <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 35px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
                 </div>  
                 <div>Won: {frames[p]} frame(s) </div>
+              </div>
+
+              <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "flex-start", backgroundColor: "#e5e7eb", borderRadius: "8px",}}>
+                {playerPots[p].map((shot, i) => {
+                  const key = shot.label.toLowerCase()
+                  return (<span key={i} style={{ fontSize: "18px", lineHeight: 1}}> {BALL_EMOJI[key] ?? ''}</span>)
+                })}
               </div>
             ))}
           </CardContent>
         </Card>
-        <div style={{ height: "8px" }} />
+        <div style={{ height: "8px", backgroundColor: "#e5e7eb", borderRadius: "4px", }} />
         <Card className="rounded-3xl shadow">
           <CardContent style={{
               display: "grid",
