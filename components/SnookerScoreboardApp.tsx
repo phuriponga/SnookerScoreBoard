@@ -84,60 +84,69 @@ const BALL_IMAGES: Record<Color | 'red', string> = {
 const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
    switch (action.type) {
   
-     case 'POT_RED': {
-       if (state.phase !== 'reds' || state.expectedNext !== 'red' || state.redsRemaining <= 0) return state
- 
-       const newReds = state.redsRemaining - 1
-
-        return {
-          ...state,
-          scores: {
-            ...state.scores,
-            [state.currentPlayer]: state.scores[state.currentPlayer] + 1
-          },
-          redsRemaining: newReds,
-          expectedNext: 'color',
-        
-          // IMPORTANT: do NOT switch phase yet
-          phase: 'reds',
-        
-          history: [
-            ...state.history,
-            {
-              player: state.currentPlayer,
-              points: 1,
-              label: 'Red',
-              redsRemaining: newReds,
-              phase: state.phase,
-              expectedNext: 'color',
-              nextColorIndex: state.nextColorIndex,
-              ball: 'red'
-            }
-          ]
-        }
-     }
+    case 'POT_RED': {
+      if (state.phase !== 'reds' || state.expectedNext !== 'red' || state.redsRemaining <= 0) {
+        return state
+      }
+    
+      const newReds = state.redsRemaining - 1
+      const isLastRed = newReds === 0
+    
+      return {
+        ...state,
+        scores: {
+          ...state.scores,
+          [state.currentPlayer]: state.scores[state.currentPlayer] + 1
+        },
+        redsRemaining: newReds,
+    
+        // after red → must play color
+        expectedNext: 'color',
+    
+        history: [
+          ...state.history,
+          {
+            player: state.currentPlayer,
+            points: 1,
+            label: 'Red',
+            redsRemaining: newReds,
+            phase: state.phase,
+            expectedNext: state.expectedNext,
+            nextColorIndex: state.nextColorIndex,
+            ball: 'red'
+          }
+        ]
+      }
+    }
 
     case 'POT_COLOR': {
       const color = action.color
       const pts = COLOR_POINTS[color]
-      const isFinalRedColorPhase = state.phase === 'reds' && state.redsRemaining === 0
     
       // =========================
-      // 1. REDS PHASE (including last-red transition)
+      // 1. REDS PHASE (including last red transition)
       // =========================
       if (state.phase === 'reds') {
         if (state.expectedNext !== 'color') return state
     
-        const newReds = state.redsRemaining
-        const isLastRedJustPotted = state.redsRemaining === 0
+        const newReds = state.redsRemaining - 1
+        const isLastRed = newReds === 0
     
-        const nextState: GameState = {
+        return {
           ...state,
           scores: {
             ...state.scores,
             [state.currentPlayer]: state.scores[state.currentPlayer] + pts
           },
+          redsRemaining: newReds,
+    
+          // after color → go back to red UNLESS reds are finished
           expectedNext: 'red',
+    
+          // IMPORTANT: only switch phase AFTER this color is played
+          phase: isLastRed ? 'colors' : 'reds',
+          nextColorIndex: isLastRed ? 0 : state.nextColorIndex,
+    
           history: [
             ...state.history,
             {
@@ -152,18 +161,10 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
             }
           ]
         }
-    
-        // ONLY AFTER the final color after last red
-        if (isLastRedJustPotted) {
-          nextState.phase = 'colors'
-          nextState.nextColorIndex = 0
-        }
-    
-        return nextState
       }
     
       // =========================
-      // 2. COLORS PHASE
+      // 2. COLORS PHASE (strict order)
       // =========================
       if (state.phase !== 'colors') return state
     
@@ -172,6 +173,8 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
     
       if (color !== expectedColor) return state
     
+      const isLastColor = state.nextColorIndex === COLOR_ORDER.length - 1
+    
       return {
         ...state,
         scores: {
@@ -179,6 +182,10 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
           [state.currentPlayer]: state.scores[state.currentPlayer] + pts
         },
         nextColorIndex: state.nextColorIndex + 1,
+    
+        // optional: you can mark frame end here if black
+        phase: isLastColor ? 'colors' : state.phase,
+    
         history: [
           ...state.history,
           {
@@ -193,8 +200,7 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
           }
         ]
       }
-    }
-       
+    }       
      case 'FOUL': {
        const other = state.currentPlayer === 'A' ? 'B' : 'A'
   
@@ -232,13 +238,6 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
   
     case 'SWITCH_PLAYER': {
       if (state.currentPlayer === action.player) return state
-
-      // Potted last red, then switched turn
-      const isLastRedJustPotted = state.redsRemaining === 0
-      if (isLastRedJustPotted) {
-          nextState.phase = 'colors'
-          nextState.nextColorIndex = 0
-      }
       
       return {
         ...state,
