@@ -28,6 +28,26 @@ const COLOR_POINTS: Record<Color, number> = {
   black: 7,
 }
 
+type GameState = {
+  scores: { A: number; B: number }
+  currentPlayer: Player
+  redsRemaining: number
+  phase: 'reds' | 'colors'
+  expectedNext: 'red' | 'color'
+  nextColorIndex: number
+  history: Action[]
+}
+
+const initialState: GameState = {
+  scores: { A: 0, B: 0 },
+  currentPlayer: 'A',
+  redsRemaining: 15,
+  phase: 'reds',
+  expectedNext: 'red',
+  nextColorIndex: 0,
+  history: [],
+}
+
 const BALL_EMOJI: Record<string, string> = {
   red: '🔴',
   yellow: '🟡',
@@ -121,6 +141,174 @@ export default function SnookerScoreboardApp() {
     return result
   }, [history])
 
+  function reducer(state: GameState, action: any): GameState {
+    switch (action.type) {
+  
+      case 'POT_RED': {
+        if (state.phase !== 'reds' || state.expectedNext !== 'red' || state.redsRemaining <= 0)
+          return state
+  
+        return {
+          ...state,
+          scores: {
+            ...state.scores,
+            [state.currentPlayer]: state.scores[state.currentPlayer] + 1
+          },
+          redsRemaining: state.redsRemaining - 1,
+          expectedNext: 'color',
+          history: [
+            ...state.history,
+            {
+              player: state.currentPlayer,
+              points: 1,
+              label: 'Red',
+              redsRemaining: state.redsRemaining,
+              phase: state.phase,
+              expectedNext: state.expectedNext,
+              nextColorIndex: state.nextColorIndex
+            }
+          ]
+        }
+      }
+  
+      case 'POT_COLOR': {
+        const pts = COLOR_POINTS[action.color]
+  
+        if (state.phase === 'reds') {
+          if (state.expectedNext !== 'color') return state
+  
+          return {
+            ...state,
+            scores: {
+              ...state.scores,
+              [state.currentPlayer]: state.scores[state.currentPlayer] + pts
+            },
+            expectedNext: 'red',
+            phase: state.redsRemaining === 0 ? 'colors' : state.phase,
+            nextColorIndex: state.redsRemaining === 0 ? 0 : state.nextColorIndex,
+            history: [
+              ...state.history,
+              {
+                player: state.currentPlayer,
+                points: pts,
+                label: action.color,
+                redsRemaining: state.redsRemaining,
+                phase: state.phase,
+                expectedNext: state.expectedNext,
+                nextColorIndex: state.nextColorIndex
+              }
+            ]
+          }
+        }
+  
+        const expectedColor = COLOR_ORDER[state.nextColorIndex]
+        if (action.color !== expectedColor) return state
+  
+        return {
+          ...state,
+          scores: {
+            ...state.scores,
+            [state.currentPlayer]: state.scores[state.currentPlayer] + pts
+          },
+          nextColorIndex: state.nextColorIndex + 1,
+          history: [
+            ...state.history,
+            {
+              player: state.currentPlayer,
+              points: pts,
+              label: action.color,
+              redsRemaining: state.redsRemaining,
+              phase: state.phase,
+              expectedNext: state.expectedNext,
+              nextColorIndex: state.nextColorIndex
+            }
+          ]
+        }
+      }
+  
+      case 'FOUL': {
+        const other = state.currentPlayer === 'A' ? 'B' : 'A'
+  
+        return {
+          ...state,
+          scores: {
+            ...state.scores,
+            [other]: state.scores[other] + action.points
+          },
+          currentPlayer: other,
+          history: [
+            ...state.history,
+            {
+              player: state.currentPlayer,
+              points: 0,
+              label: 'Break End',
+              redsRemaining: state.redsRemaining,
+              phase: state.phase,
+              expectedNext: state.expectedNext,
+              nextColorIndex: state.nextColorIndex,
+              breakEnd: true
+            },
+            {
+              player: other,
+              points: action.points,
+              label: `Foul ${action.points}`,
+              redsRemaining: state.redsRemaining,
+              phase: state.phase,
+              expectedNext: state.expectedNext,
+              nextColorIndex: state.nextColorIndex
+            }
+          ]
+        }
+      }
+  
+      case 'SWITCH_PLAYER': {
+        if (state.currentPlayer === action.player) return state
+  
+        return {
+          ...state,
+          currentPlayer: action.player,
+          history: [
+            ...state.history,
+            {
+              player: state.currentPlayer,
+              points: 0,
+              label: 'Break End',
+              redsRemaining: state.redsRemaining,
+              phase: state.phase,
+              expectedNext: state.expectedNext,
+              nextColorIndex: state.nextColorIndex,
+              breakEnd: true
+            }
+          ]
+        }
+      }
+  
+      case 'UNDO': {
+        const last = state.history[state.history.length - 1]
+        if (!last) return state
+  
+        return {
+          ...state,
+          scores: {
+            ...state.scores,
+            [last.player]: state.scores[last.player] - last.points
+          },
+          history: state.history.slice(0, -1),
+          redsRemaining: last.redsRemaining,
+          phase: last.phase,
+          expectedNext: last.expectedNext,
+          nextColorIndex: last.nextColorIndex
+        }
+      }
+  
+      case 'RESET_FRAME':
+        return initialState
+  
+      default:
+        return state
+    }
+  }
+  
   function openRenameModal(player: Player) {
     setRenameTarget(player)
     setTempName(playerNames[player])
