@@ -26,6 +26,7 @@ type GameAction =
   | { type: 'SWITCH_PLAYER'; player: Player }
   | { type: 'UNDO' }
   | { type: 'RESET_FRAME' }
+  | { type: 'RESPOT_BLACK' }
 
 type GameState = {
   scores: { A: number; B: number }
@@ -241,6 +242,12 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
   
      case 'RESET_FRAME':
        return initialState
+
+      case 'RESPOT_BLACK':
+        return {
+          ...state,
+          nextColorIndex: 5 // black index
+      }
  
      default:
        return state
@@ -249,7 +256,7 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
 
 export default function SnookerScoreboardApp() {
   const [frameHistory, setFrameHistory] = useState<{ A: number; B: number; highBreakA: number; highBreakB: number }[]>([])
-  const [playerNames, setPlayerNames] = useState({ A: 'PlayerA', B: 'PlayerB' })
+  const [playerNames, setPlayerNames] = useState({ A: 'PA', B: 'PB' })
   const [renameTarget, setRenameTarget] = useState<Player | null>(null)
   const [tempName, setTempName] = useState('')
   const [frames, setFrames] = useState({ A: 0, B: 0 })
@@ -342,7 +349,7 @@ function endFrame(finalScores = scores) {
   //Last black was potted; but re-spot needed
   if (phase === 'colors' && nextColorIndex === COLOR_ORDER.length - 1 && finalScores.A === finalScores.B) {
     alert(`Please re-spot the black! :)`)
-    setNextColorIndex(5)
+    dispatch({ type: 'RESPOT_BLACK' })
     return
   }
 
