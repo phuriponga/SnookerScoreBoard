@@ -203,27 +203,28 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
        }
      }
   
-     case 'SWITCH_PLAYER': {
-       if (state.currentPlayer === action.player) return state
-  
-       return {
-         ...state,
-         currentPlayer: action.player,
-         history: [
-           ...state.history,
-           {
-             player: state.currentPlayer,
-             points: 0,
-             label: 'Break End',
-             redsRemaining: state.redsRemaining,
-             phase: state.phase,
-             expectedNext: state.expectedNext,
-             nextColorIndex: state.nextColorIndex,
-             breakEnd: true
-           }
-         ]
-       }
-     }
+    case 'SWITCH_PLAYER': {
+      if (state.currentPlayer === action.player) return state
+    
+      return {
+        ...state,
+        currentPlayer: action.player,
+        expectedNext: state.redsRemaining > 0 ? 'red' : state.expectedNext, 
+        history: [
+          ...state.history,
+          {
+            player: state.currentPlayer,
+            points: 0,
+            label: 'Break End',
+            redsRemaining: state.redsRemaining,
+            phase: state.phase,
+            expectedNext: state.expectedNext,
+            nextColorIndex: state.nextColorIndex,
+            breakEnd: true
+          }
+        ]
+      }
+    }
  
      case 'UNDO': {
        const last = state.history[state.history.length - 1]
