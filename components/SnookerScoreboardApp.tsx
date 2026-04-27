@@ -111,70 +111,76 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
        }
      }
   
-     case 'POT_COLOR': {
-        
-       const color = action.color
-       const pts = COLOR_POINTS[color]
-  
-        if (state.phase === 'reds') {
-          if (state.expectedNext !== 'color') return state
-        
-          const newReds = state.redsRemaining
-        
-          return {
-            ...state,
-            scores: {
-              ...state.scores,
-              [state.currentPlayer]: state.scores[state.currentPlayer] + pts
-            },
-            expectedNext: 'red',
-            history: [
-              ...state.history,
-              {
-                player: state.currentPlayer,
-                points: pts,
-                label: action.color,
-                redsRemaining: newReds,
-                phase: state.phase,
-                expectedNext: state.expectedNext,
-                nextColorIndex: state.nextColorIndex,
-                ball: action.color
-              }
-            ]
-          }
+    case 'POT_COLOR': {
+      const color = action.color
+      const pts = COLOR_POINTS[color]
+    
+      // ======================
+      // REDS PHASE
+      // ======================
+      if (state.phase === 'reds') {
+        if (state.expectedNext !== 'color') return state
+    
+        return {
+          ...state,
+          scores: {
+            ...state.scores,
+            [state.currentPlayer]: state.scores[state.currentPlayer] + pts
+          },
+          expectedNext: 'red',
+          history: [
+            ...state.history,
+            {
+              player: state.currentPlayer,
+              points: pts,
+              label: action.color,
+              redsRemaining: state.redsRemaining,
+              phase: state.phase,
+              expectedNext: state.expectedNext,
+              nextColorIndex: state.nextColorIndex,
+              ball: action.color
+            }
+          ]
         }
-  
-        if (state.phase !== 'colors') return state
-  
-        if (state.phase === 'colors') {
-          const expectedColor = COLOR_ORDER[state.nextColorIndex]
-          if (!expectedColor) return state
-          if (action.color !== expectedColor) return state
-         }       
-        
-       return {
-         ...state,
-         scores: {
-           ...state.scores,
-           [state.currentPlayer]: state.scores[state.currentPlayer] + pts
-         },
-         nextColorIndex: state.nextColorIndex + 1,
-         history: [
-           ...state.history,
-           {
-             player: state.currentPlayer,
-             points: pts,
-             label: action.color,
-             redsRemaining: state.redsRemaining,
-             phase: state.phase,
-             expectedNext: state.expectedNext,
-             nextColorIndex: state.nextColorIndex,
-             ball: action.color
-           }
-         ]
-       }
-     }
-  
+      }
+    
+      // ======================
+      // COLORS PHASE
+      // ======================
+      if (state.phase === 'colors') {
+        const expectedColor = COLOR_ORDER[state.nextColorIndex]
+    
+        if (!expectedColor) return state
+        if (action.color !== expectedColor) return state
+    
+        const newIndex = state.nextColorIndex + 1
+    
+        return {
+          ...state,
+          scores: {
+            ...state.scores,
+            [state.currentPlayer]: state.scores[state.currentPlayer] + pts
+          },
+          nextColorIndex: newIndex,
+          history: [
+            ...state.history,
+            {
+              player: state.currentPlayer,
+              points: pts,
+              label: action.color,
+              redsRemaining: state.redsRemaining,
+              phase: state.phase,
+              expectedNext: state.expectedNext,
+              nextColorIndex: state.nextColorIndex,
+              ball: action.color
+            }
+          ]
+        }
+      }
+    
+      return state
+    }  
+       
      case 'FOUL': {
        const other = state.currentPlayer === 'A' ? 'B' : 'A'
   
