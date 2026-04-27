@@ -285,7 +285,7 @@ export default function SnookerScoreboardApp() {
     history
   } = state
 
-  const isFrameComplete = phase === 'colors' && nextColorIndex >= .length
+  const isFrameComplete = phase === 'colors' && nextColorIndex >= COLOR_ORDER.length
   
   const currentBreak = useMemo(() => {
     let total = 0
@@ -367,7 +367,7 @@ export default function SnookerScoreboardApp() {
 
 function endFrame(finalScores = scores) {
   //Last black was potted; but re-spot needed
-  if (phase === 'colors' && nextColorIndex === .length - 1 && finalScores.A === finalScores.B) {
+  if (phase === 'colors' && nextColorIndex === COLOR_ORDER.length - 1 && finalScores.A === finalScores.B) {
     alert(`Please re-spot the black! :)`)
     dispatch({ type: 'RESPOT_BLACK' })
     return
