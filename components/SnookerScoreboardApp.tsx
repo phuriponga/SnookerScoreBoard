@@ -228,11 +228,20 @@ const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
   
     case 'SWITCH_PLAYER': {
       if (state.currentPlayer === action.player) return state
-      
+    
+      const noRedsLeft = state.redsRemaining === 0
+    
       return {
         ...state,
         currentPlayer: action.player,
-        expectedNext: state.redsRemaining > 0 ? 'red' : state.expectedNext, 
+    
+        // THIS IS THE KEY FIX
+        phase: noRedsLeft ? 'colors' : state.phase,
+        nextColorIndex: noRedsLeft ? 0 : state.nextColorIndex,
+    
+        // reset expectation correctly
+        expectedNext: noRedsLeft ? 'color' : 'red',
+    
         history: [
           ...state.history,
           {
