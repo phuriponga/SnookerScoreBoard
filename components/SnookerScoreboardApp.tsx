@@ -328,7 +328,7 @@ function endFrame(finalScores = scores) {
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
-                  <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "flex-start", backgroundColor: "#e5e7eb", borderRadius: "8px",}}>
+                  <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "flex-start", backgroundColor: "#e5e7eb", borderRadius: "8px"}}>
                     {playerPots[p].map((shot, i) => {
                       const key = shot.label.toLowerCase()
                       return (<span key={i} style={{ fontSize: "18px", lineHeight: 1}}> {BALL_EMOJI[key] ?? ''}</span>)
@@ -341,12 +341,14 @@ function endFrame(finalScores = scores) {
             ))}
           </CardContent>
         </Card>
-        <div style={{ height: "8px", backgroundColor: "#e5e7eb", borderRadius: "4px", }} />
+        <div style={{ height: "8px" }} />
         <Card className="rounded-3xl shadow">
           <CardContent style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              gap: "12px"
+              gap: "12px",
+              backgroundColor: "#e5e7eb", 
+              borderRadius: "8px"
             }}>
             <h3>Remaining Reds: {redsRemaining}</h3>
             <h3>Current Break: {currentBreak}</h3>
