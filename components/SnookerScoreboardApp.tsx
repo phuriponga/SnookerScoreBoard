@@ -56,7 +56,7 @@ const initialState: GameState = {
   history: [],
 }
 
-const BALL_EMOJI: Record<string, string> = {
+const BALL_EMOJI: Record<Color, string> & { red: string } = {
   red: '🔴',
   yellow: '🟡',
   green: '🟢',
@@ -88,17 +88,6 @@ export default function SnookerScoreboardApp() {
   const [frames, setFrames] = useState({ A: 0, B: 0 })
   const [bestOf] = useState(5)
 
-  const [state, dispatch] = React.useReducer(reducer, initialState)
-  const {
-    scores,
-    currentPlayer,
-    redsRemaining,
-    phase,
-    expectedNext,
-    nextColorIndex,
-    history
-  } = state
-
   const currentBreak = useMemo(() => {
     let total = 0
     for (let i = history.length - 1; i >= 0; i--) {
@@ -125,7 +114,7 @@ export default function SnookerScoreboardApp() {
     }
   
     return result
-  }, [history])
+  }, [history, currentPlayer])
 
   const remainingPoints = useMemo(() => {
     if (phase === 'reds') {
@@ -149,7 +138,7 @@ export default function SnookerScoreboardApp() {
     return result
   }, [history])
 
-  function reducer(state: GameState, action: GameAction): GameState
+  const reducer: React.Reducer<GameState, GameAction> = (state, action) => {
     switch (action.type) {
   
       case 'POT_RED': {
@@ -195,7 +184,7 @@ export default function SnookerScoreboardApp() {
             },
             expectedNext: 'red',
             phase: state.redsRemaining === 0 ? 'colors' : state.phase,
-            nextColorIndex: state.redsRemaining === 0 ? 0 : state.nextColorIndex,
+            nextColorIndex: state.redsRemaining - 1 === 0 ? 0 : state.nextColorIndex,
             history: [
               ...state.history,
               {
@@ -318,6 +307,16 @@ export default function SnookerScoreboardApp() {
         return state
     }
   }
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const {
+    scores,
+    currentPlayer,
+    redsRemaining,
+    phase,
+    expectedNext,
+    nextColorIndex,
+    history
+  } = state
   
   function openRenameModal(player: Player) {
     setRenameTarget(player)
@@ -411,7 +410,7 @@ function endFrame(finalScores = scores) {
                   <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 35px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
                 </div>  
                 <div>Won: {frames[p]} frame(s) </div>
-                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "flex-start", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>
+                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>
                   {playerPots[p].map((shot, i) => {
                   const key = shot.label.toLowerCase()
                   return (<span key={i} style={{ fontSize: "18px", lineHeight: 1}}> {BALL_EMOJI[key] ?? ''}</span>)
