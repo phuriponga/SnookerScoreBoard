@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useReducer, useEffect } from 'react'
 import { Card, CardContent } from "../components/ui/card"
 import { Button } from "../components/ui/button"
 import Image from 'next/image'
@@ -275,7 +275,6 @@ export default function SnookerScoreboardApp() {
   const [frames, setFrames] = useState({ A: 0, B: 0 })
   const [bestOf] = useState(5)
 
-  //const [state, dispatch] = React.useReducer(reducer, initialState)
   const [state, dispatch] = useReducer(reducer, initialState)
   const {
     scores,
