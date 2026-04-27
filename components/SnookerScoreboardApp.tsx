@@ -57,16 +57,19 @@ export default function SnookerScoreboardApp() {
   const [playerNames, setPlayerNames] = useState({ A: 'PlayerA', B: 'PlayerB' })
   const [renameTarget, setRenameTarget] = useState<Player | null>(null)
   const [tempName, setTempName] = useState('')
-  
-  const [scores, setScores] = useState({ A: 0, B: 0 })
   const [frames, setFrames] = useState({ A: 0, B: 0 })
-  const [currentPlayer, setCurrentPlayer] = useState<Player>('A')
-  const [redsRemaining, setRedsRemaining] = useState(15)
-  const [phase, setPhase] = useState<'reds' | 'colors'>('reds')
-  const [expectedNext, setExpectedNext] = useState<'red' | 'color'>('red')
-  const [nextColorIndex, setNextColorIndex] = useState(0)
-  const [history, setHistory] = useState<Action[]>([])
   const [bestOf] = useState(5)
+
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const {
+    scores,
+    currentPlayer,
+    redsRemaining,
+    phase,
+    expectedNext,
+    nextColorIndex,
+    history
+  } = state
 
   const currentBreak = useMemo(() => {
     let total = 0
@@ -117,123 +120,6 @@ export default function SnookerScoreboardApp() {
   
     return result
   }, [history])
-  
-  function addScore(points: number, label: string) {
-    const newScore = scores[currentPlayer] + points
-  
-    setScores(prev => ({ ...prev, [currentPlayer]: newScore }))
-  
-    const newHistory = [
-      ...history,
-      { player: currentPlayer, points, label, redsRemaining, phase, expectedNext, nextColorIndex }
-    ]
-  
-    setHistory(newHistory)
-  }
-
-  function potRed() {
-    if (phase !== 'reds' || expectedNext !== 'red' || redsRemaining <= 0) return
-    addScore(1, 'red')
-    setRedsRemaining(r => r - 1)
-    setExpectedNext('color')
-    if (redsRemaining - 1 === 0) {
-      // last red potted, still needs one color before colors clearance
-    }
-  }
-
-  function potColor(color: Color) {
-    const pts = COLOR_POINTS[color]
-
-    if (phase === 'reds') {
-      if (expectedNext !== 'color') return
-      addScore(pts, color)
-
-      if (redsRemaining === 0) {
-        setPhase('colors')
-        setNextColorIndex(0)
-      }
-      setExpectedNext('red')
-      return
-    }
-
-    const expectedColor = COLOR_ORDER[nextColorIndex]
-    if (color !== expectedColor) return
-
-    addScore(pts, color)
-
-    if (nextColorIndex < COLOR_ORDER.length - 1) {
-      setNextColorIndex(i => i + 1)
-    } else {
-      // last black: delay endFrame so score updates first
-      const finalScores = {
-        ...scores,
-        [currentPlayer]: scores[currentPlayer] + pts
-      }
-      
-      setTimeout(() => endFrame(finalScores), 100)
-    }
-  }
-
-  function foul(points: number) {
-    const other = currentPlayer === 'A' ? 'B' : 'A'
-
-    setHistory(prev => [
-      ...prev,
-      {
-        player: currentPlayer,
-        points: 0,
-        label: 'Break End',
-        redsRemaining,
-        phase,
-        expectedNext,
-        nextColorIndex,
-        breakEnd: true
-      },
-      {
-        player: other,
-        points,
-        label: `Foul ${points}`,
-        redsRemaining,
-        phase,
-        expectedNext,
-        nextColorIndex
-      }
-    ])
-    
-    setScores(prev => ({ ...prev, [other]: prev[other] + points }))
-    setCurrentPlayer(other)
-  }
-
-  function switchTurn(player: Player) {
-    if (currentPlayer !== player) {
-
-      //Mark end of break for current player
-      setHistory(prev => [
-        ...prev,
-        {
-          player: currentPlayer,
-          points: 0,
-          label: 'Break End',
-          redsRemaining,
-          phase,
-          expectedNext,
-          nextColorIndex,
-          breakEnd: true
-        }
-      ])
-      
-      setCurrentPlayer(player)
-    }
-    if (redsRemaining <= 0) {
-        //Potted the last red then switch turn, we shall go to colour mode
-        if (phase === 'reds') {
-          setPhase('colors')
-          setNextColorIndex(0)
-        }
-    } else {
-      setExpectedNext('red')
-    }
-  }
 
   function openRenameModal(player: Player) {
     setRenameTarget(player)
@@ -255,17 +141,6 @@ export default function SnookerScoreboardApp() {
   function closeRenameModal() {
     setRenameTarget(null)
     setTempName('')
-  }
-  
-  function undo() {
-    const last = history[history.length - 1]
-    if (!last) return
-    setScores(prev => ({ ...prev, [last.player]: prev[last.player] - last.points }))
-    setHistory(prev => prev.slice(0, -1))
-    setRedsRemaining(last.redsRemaining)
-    setPhase(last.phase)
-    setExpectedNext(last.expectedNext)
-    setNextColorIndex(last.nextColorIndex)
   }
 
 function endFrame(finalScores = scores) {
@@ -296,14 +171,21 @@ function endFrame(finalScores = scores) {
 
   alert(`${playerNames[winner]} wins the frame!`)
 
-  setScores({ A: 0, B: 0 })
-  setCurrentPlayer('A')
-  setRedsRemaining(15)
-  setPhase('reds')
-  setExpectedNext('red')
-  setNextColorIndex(0)
-  setHistory([])
+  dispatch({ type: 'RESET_FRAME' })
 }
+
+  const potRed = () => dispatch({ type: 'POT_RED' })
+
+  const potColor = (c: Color) =>
+    dispatch({ type: 'POT_COLOR', color: c })
+  
+  const foul = (p: number) =>
+    dispatch({ type: 'FOUL', points: p })
+  
+  const switchTurn = (p: Player) =>
+    dispatch({ type: 'SWITCH_PLAYER', player: p })
+  
+  const undo = () => dispatch({ type: 'UNDO' })
 
   const framesToWin = Math.ceil(bestOf / 2)
   const snookersRequired = Math.max(0, Math.ceil((Math.abs(scores.A - scores.B) - remainingPoints) / 4))
