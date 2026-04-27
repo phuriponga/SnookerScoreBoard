@@ -58,7 +58,8 @@ const initialState: GameState = {
   history: [],
 }
 
-const BALL_EMOJI: Record<Color, string> & { red: string } = {
+//const BALL_EMOJI: Record<Color, string> & { red: string } = {
+const BALL_EMOJI: Record<Color, string> = {  
   red: '🔴',
   yellow: '🟡',
   green: '🟢',
@@ -274,7 +275,8 @@ export default function SnookerScoreboardApp() {
   const [frames, setFrames] = useState({ A: 0, B: 0 })
   const [bestOf] = useState(5)
 
-  const [state, dispatch] = React.useReducer(reducer, initialState)
+  //const [state, dispatch] = React.useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
   const {
     scores,
     currentPlayer,
@@ -285,7 +287,8 @@ export default function SnookerScoreboardApp() {
     history
   } = state
 
-  const isFrameComplete = phase === 'colors' && nextColorIndex >= COLOR_ORDER.length
+  const isFrameComplete =
+  phase === 'colors' && nextColorIndex === COLOR_ORDER.length
   
   const currentBreak = useMemo(() => {
     let total = 0
@@ -337,11 +340,11 @@ export default function SnookerScoreboardApp() {
     return result
   }, [history])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isFrameComplete) {
       endFrame()
     }
-  }, [isFrameComplete])
+  }, [isFrameComplete, endFrame])
   
   function openRenameModal(player: Player) {
     setRenameTarget(player)
@@ -464,7 +467,7 @@ function endFrame(finalScores = scores) {
           <Button className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={potRed}>
             <Image src={BALL_IMAGES.red} alt="Red ball" width={88} height={88} />
           </Button>
-          {.map(c => (
+          {COLOR_ORDER.map(c => (
             <Button key={c} className="h-24 text-xl rounded-2xl flex flex-col gap-2" onClick={() => potColor(c)}>
               <Image src={BALL_IMAGES[c]} alt={`${c} ball`} width={88} height={88} />
             </Button>
