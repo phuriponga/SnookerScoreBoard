@@ -460,43 +460,48 @@ function endFrame(finalScores = scores) {
             }}
           >
             {(['A', 'B'] as Player[]).map(p => (
-              <div
-                onClick={() => switchTurn(p)}
-                key={p}
-                style={{flex: 1, backgroundColor: currentPlayer === p ? "green" : "white", color: currentPlayer === p ? "white" : "black", border: "4px solid black", borderRadius: "24px", padding: "12px"}}
-              >
-                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
-                  <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 35px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
-                </div> 
-                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: currentPlayer === p ? "#049e51" : "#f6f8fc", borderRadius: "8px"}}>Potted: 
-                  {playerPots[p].map((shot, i) => (
-                    <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
-                      {shot.ball && (
-                        <span
-                          style={{
-                            width: 14,
-                            height: 14,
-                            borderRadius: '50%',
-                            display: 'inline-block',
-                            backgroundColor: {
-                              red: '#d32f2f',
-                              yellow: '#fdd835',
-                              green: '#388e3c',
-                              brown: '#6d4c41',
-                              blue: '#1976d2',
-                              pink: '#f06292',
-                              black: '#000000',
-                            }[shot.ball],
-                            marginRight: 2
-                          }}
-                        />
-                      )}
-                    </span>
-                  ))}
+              <div key={p}>
+                {/* Player BOX */}
+                <div
+                  onClick={() => switchTurn(p)}
+                  style={{flex: 1, backgroundColor: currentPlayer === p ? "green" : "white", color: currentPlayer === p ? "white" : "black", border: "4px solid black", borderRadius: "24px", padding: "12px"}}
+                >
+                  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                    <h1 onDoubleClick={() => openRenameModal(p)} style={{fontSize: "46px", fontWeight: "bold", margin: 0, cursor: "pointer", userSelect: "none"}}>{playerNames[p]}</h1>
+                    <h1 className="score-font" style={{ fontSize: "230px", fontWeight: "bold", margin: "0px 0px 35px 0px", lineHeight: 0.9, textAlign: "center" }}>{scores[p]}</h1>
+                  </div> 
+                  <div style={{ height: "8px" }} />
+                  <div>Won: {frames[p]} frame(s) </div>
                 </div>
-                <div style={{ height: "8px" }} />
-                <div>Won: {frames[p]} frame(s) </div>
+
+                {/* Potted ball BOX */
+                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>Potted: 
+                    {playerPots[p].map((shot, i) => (
+                      <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                        {shot.ball && (
+                          <span
+                            style={{
+                              width: 14,
+                              height: 14,
+                              borderRadius: '50%',
+                              display: 'inline-block',
+                              backgroundColor: {
+                                red: '#d32f2f',
+                                yellow: '#fdd835',
+                                green: '#388e3c',
+                                brown: '#6d4c41',
+                                blue: '#1976d2',
+                                pink: '#f06292',
+                                black: '#000000',
+                              }[shot.ball],
+                              marginRight: 2
+                            }}
+                          />
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                  
               </div>
             ))}
           </CardContent>
