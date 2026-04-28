@@ -402,12 +402,12 @@ export default function SnookerScoreboardApp() {
 
 function endFrame(finalScores = scores) {
   //Last black was potted; but re-spot needed
-  if (phase === 'colors' && nextColorIndex === COLOR_ORDER.length - 1 && finalScores.A === finalScores.B) {
-    alert(`Please re-spot the black! :)`)
+  if (phase === 'colors' && nextColorIndex === COLOR_ORDER.length && finalScores.A === finalScores.B) {
+    alert('Please re-spot the black! :)')
     dispatch({ type: 'RESPOT_BLACK' })
     return
   }
-
+  
   //Ending frame
   const winner = finalScores.A >= finalScores.B ? 'A' : 'B'
 
@@ -518,14 +518,7 @@ function endFrame(finalScores = scores) {
             <h3>Remaining Reds: {redsRemaining}</h3>
             <h3>Current Break: {currentBreak}</h3>
             <h3>Remaining Points: {remainingPoints}</h3>
-            <h3
-              style={{
-                color: snookersRequired > 0 ? "#dc2626" : "inherit",
-                fontWeight: snookersRequired > 0 ? "bold" : "normal"
-              }}
-            >
-              Snookers Needed: {snookersRequired}
-            </h3>
+            <h3 style={{color: snookersRequired > 0 ? "#dc2626" : "inherit"}}>Snookers Needed: {snookersRequired}</h3>
           </CardContent>
         </Card>
         <div style={{ height: "8px" }} />
