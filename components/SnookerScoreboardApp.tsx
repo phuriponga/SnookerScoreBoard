@@ -474,7 +474,7 @@ function endFrame(finalScores = scores) {
                   <div>Won: {frames[p]} frame(s) </div>
                 </div>
 
-                {/* Potted ball BOX */
+                {/* Potted ball BOX */}
                 <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>Potted: 
                     {playerPots[p].map((shot, i) => (
                       <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
