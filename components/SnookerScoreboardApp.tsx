@@ -475,7 +475,7 @@ function endFrame(finalScores = scores) {
                 </div>
 
                 {/* Potted ball BOX */}
-                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "4px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>Potted: 
+                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "2px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>Potted: 
                     {playerPots[p].map((shot, i) => (
                       <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
                         {shot.ball && (
@@ -518,7 +518,14 @@ function endFrame(finalScores = scores) {
             <h3>Remaining Reds: {redsRemaining}</h3>
             <h3>Current Break: {currentBreak}</h3>
             <h3>Remaining Points: {remainingPoints}</h3>
-            <h3>Snookers Needed: {snookersRequired}</h3>
+            <h3
+              style={{
+                color: snookersRequired > 0 ? "#dc2626" : "inherit",
+                fontWeight: snookersRequired > 0 ? "bold" : "normal"
+              }}
+            >
+              Snookers Needed: {snookersRequired}
+            </h3>
           </CardContent>
         </Card>
         <div style={{ height: "8px" }} />
