@@ -478,7 +478,6 @@ function endFrame(finalScores = scores) {
                     {playerPots[p].map((shot, i) => (
                       <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
                         {shot.ball && (
-                        <>
                           <span
                             style={{
                               width: 14,
@@ -497,10 +496,9 @@ function endFrame(finalScores = scores) {
                               marginRight: 2
                             }}
                           />
-                          {shot.breakEnd && (
-                            <span style={{ color: "#999", marginRight: 2 }}>|</span>
-                          )}
-                        </>
+                        )}
+                        {shot.breakEnd && (
+                          <span style={{ color: "#999", marginRight: 2 }}>|</span>
                         )}
                       </span>
                     ))}
