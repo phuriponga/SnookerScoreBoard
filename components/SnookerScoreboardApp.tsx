@@ -362,7 +362,7 @@ export default function SnookerScoreboardApp() {
   
     for (const h of history) {
       // ignore break markers and fouls
-      if (h.breakEnd) continue
+      //if (h.breakEnd) continue
       if (h.points === 0) continue
       if (h.label.startsWith('Foul')) continue
   
@@ -475,9 +475,14 @@ function endFrame(finalScores = scores) {
                 </div>
 
                 {/* Potted ball BOX */}
-                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "2px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>Potted: 
+                <div style={{marginTop: "1px", display: "flex", flexWrap: "wrap", gap: "1px", justifyContent: "left", backgroundColor: "#f6f8fc", borderRadius: "8px"}}>Potted: 
                     {playerPots[p].map((shot, i) => (
                       <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
+
+                        {shot.breakEnd && (
+                          <span style={{ color: "#999", marginRight: 2 }}>|</span>
+                        )}
+                        
                         {shot.ball && (
                           <span
                             style={{
