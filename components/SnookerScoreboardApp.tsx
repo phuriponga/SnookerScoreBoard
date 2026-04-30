@@ -399,6 +399,29 @@ export default function SnookerScoreboardApp() {
     setTempName('')
   }
 
+function resetEverything() {
+  const confirmed = window.confirm(
+    "Would you like to start a new match? This will clear the entire frame history and player names."
+  )
+
+  if (!confirmed) return
+
+  // reset match history
+  setFrameHistory([])
+
+  // reset frame wins
+  setFrames({ A: 0, B: 0 })
+
+  // reset player names
+  setPlayerNames({
+    A: 'PA',
+    B: 'PB'
+  })
+
+  // reset current frame/game state
+  dispatch({ type: 'RESET_FRAME' })
+}
+  
 function endFrame(finalScores = scores) {
   //Last black was potted; but re-spot needed
   if (phase === 'colors' && nextColorIndex === COLOR_ORDER.length && finalScores.A === finalScores.B) {
@@ -548,8 +571,12 @@ function endFrame(finalScores = scores) {
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => foul(5)}>Foul +5</Button>
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => foul(6)}>Foul +6</Button>
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => foul(7)}>Foul +7</Button>
-          <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={undo}>Undo</Button>
-          <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => endFrame()}>End Frame</Button>
+          <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={undo}>Undo</Button> | 
+          <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" 
+            backgroundColor: "#b91c1c", color: "white"}} onClick={() => endFrame()}>End Frame</Button>
+          <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold", 
+            backgroundColor: "#b91c1c", color: "white"}} onClick={resetEverything}>New Match!</Button>
+          
           <div style={{ height: "24px" }} />
 
           <Card className="rounded-3xl shadow">
@@ -571,7 +598,6 @@ function endFrame(finalScores = scores) {
             </CardContent>
           </Card>
           <div style={{ height: "24px" }} />
-          <span className="text-lg text-gray-400 text-center block">[&copy; Phuripong - Stockholm: April 2026]</span>
         </div>
       </div>
 
