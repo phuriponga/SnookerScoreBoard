@@ -572,7 +572,7 @@ function endFrame(finalScores = scores) {
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => foul(6)}>Foul +6</Button>
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={() => foul(7)}>Foul +7</Button>
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" }} onClick={undo}>Undo</Button> | 
-          <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold" 
+          <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold", 
             backgroundColor: "#b91c1c", color: "white"}} onClick={() => endFrame()}>End Frame</Button>
           <Button className="h-32 w-full rounded-3xl" style={{ fontSize: "18px", fontWeight: "bold", 
             backgroundColor: "#b91c1c", color: "white"}} onClick={resetEverything}>New Match!</Button>
